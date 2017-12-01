@@ -34,17 +34,17 @@
           </friction>-->
         </surface>
       </collision>
-      <visual name='base_link_visual'>
-        <pose>0.53 -1.072 -0.1 1.5707963268 0 3.1415926536</pose>
+      <visual name='main'>
+        <pose>0 0 2 0 1.57079 0</pose>
         <geometry>
           <mesh>
             <scale>0.001 0.001 0.001</scale>
-            <uri>model://standard_vtol/meshes/x8_wing.dae</uri>
+            <uri>model://rigid_wing/meshes/main.dae</uri>
           </mesh>
         </geometry>
         <material>
           <script>
-            <name>Gazebo/DarkGrey</name>
+            <name>Gazebo/White</name>
             <uri>__default__</uri>
           </script>
         </material>
@@ -506,7 +506,7 @@
       </axis>
     </joint>
 
-    <link name="left_elevon">
+    <link name="rudder">
       <inertial>
         <mass>0.00000001</mass>
         <inertia>
@@ -519,12 +519,12 @@
         </inertia>
         <pose>0 0.3 0 0.00 0 0.0</pose>
       </inertial>
-      <visual name='left_elevon_visual'>
+      <visual name='rudder'>
         <pose>-0.105 0.004 -0.034 1.5707963268 0 3.1415926536</pose>
         <geometry>
           <mesh>
             <scale>0.001 0.001 0.001</scale>
-            <uri>model://standard_vtol/meshes/x8_elevon_left.dae</uri>
+            <uri>model://rigid_wing/meshes/rudder.dae</uri>
           </mesh>
         </geometry>
         <material>
@@ -535,7 +535,7 @@
         </material>
       </visual>
     </link>
-    <link name="right_elevon">
+    <link name="elevator">
       <inertial>
         <mass>0.00000001</mass>
         <inertia>
@@ -548,12 +548,12 @@
         </inertia>
         <pose>0 -0.6 0 0.00 0 0.0</pose>
       </inertial>
-      <visual name='right_elevon_visual'>
+      <visual name='elevator'>
         <pose>0.281 -1.032 -0.034 1.5707963268 0 3.1415926536</pose>
         <geometry>
           <mesh>
             <scale>0.001 0.001 0.001</scale>
-            <uri>model://standard_vtol/meshes/x8_elevon_right.dae</uri>
+            <uri>model://rigid_wing/meshes/elevator.dae</uri>
           </mesh>
         </geometry>
         <material>
@@ -592,48 +592,6 @@
         <pose>-0.5 0 0.05 0 0 0 </pose>
       </inertial>
     </link>
-    <joint name='left_elevon_joint' type='revolute'>
-      <parent>base_link</parent>
-      <child>left_elevon</child>
-      <pose>-0.18 0.6 -0.005 0 0 0.265</pose>
-      <axis>
-        <xyz>0 1 0</xyz>
-        <limit>
-          <!-- -30/+30 deg. -->
-          <lower>-0.53</lower>
-          <upper>0.53</upper>
-        </limit>
-        <dynamics>
-          <damping>1.000</damping>
-        </dynamics>
-      </axis>
-      <physics>
-        <ode>
-          <implicit_spring_damper>1</implicit_spring_damper>
-        </ode>
-      </physics>
-    </joint>
-    <joint name='right_elevon_joint' type='revolute'>
-      <parent>base_link</parent>
-      <child>right_elevon</child>
-      <pose>-0.18 -0.6 -0.005 0 0 -0.265</pose>
-      <axis>
-        <xyz>0 1 0</xyz>
-        <limit>
-          <!-- -30/+30 deg. -->
-          <lower>-0.53</lower>
-          <upper>0.53</upper>
-        </limit>
-        <dynamics>
-          <damping>1.000</damping>
-        </dynamics>
-      </axis>
-      <physics>
-        <ode>
-          <implicit_spring_damper>1</implicit_spring_damper>
-        </ode>
-      </physics>
-    </joint>
     <joint name='elevator_joint' type='revolute'>
       <parent>base_link</parent>
       <child>elevator</child>
@@ -914,7 +872,7 @@
           <joint_control_type>velocity</joint_control_type>
           <joint_name>rotor_puller_joint</joint_name>
         </channel>
-        <channel name="left_elevon">
+        <channel name="rudder">
           <input_index>5</input_index>
           <input_offset>0</input_offset>
           <input_scaling>1</input_scaling>
@@ -922,15 +880,6 @@
           <zero_position_armed>0</zero_position_armed>
           <joint_control_type>position_kinematic</joint_control_type>
           <joint_name>left_elevon_joint</joint_name>
-        </channel>
-        <channel name="right_elevon">
-          <input_index>6</input_index>
-          <input_offset>0</input_offset>
-          <input_scaling>1</input_scaling>
-          <zero_position_disarmed>0</zero_position_disarmed>
-          <zero_position_armed>0</zero_position_armed>
-          <joint_control_type>position_kinematic</joint_control_type>
-          <joint_name>right_elevon_joint</joint_name>
         </channel>
         <channel name="elevator">
           <input_index>7</input_index>
