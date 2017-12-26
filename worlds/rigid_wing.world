@@ -9,9 +9,22 @@
     <include>
       <uri>model://ground_plane</uri>
     </include>
+    <!-- The aeolus250 -->
     <include>
       <uri>model://rigid_wing</uri>
+		<pose>0 0 1.1 0 -1.57 0</pose>
     </include>
+    <!-- The Resting boxes as stands -->
+	<include>
+		<name>box1</name>
+		<pose>0 0.7 0 0 0 0</pose>
+      <uri>model://rigid_box</uri>
+	</include>
+	<include>
+		<name>box2</name>
+		<pose>0 -0.7 0 0 0 0</pose>
+      <uri>model://rigid_box</uri>
+	</include>
     <physics name='default_physics' default='0' type='ode'>
       <gravity>0 0 -9.8066</gravity>
       <ode>
