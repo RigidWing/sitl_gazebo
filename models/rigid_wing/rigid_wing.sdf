@@ -3,7 +3,7 @@
 	<model name='rigid_wing'>
 		<pose>0 0 0 0 0 0</pose>
 		<link name='base_link'>
-		  <pose>0 0 0 3.14 0 3.14</pose>
+		  <pose>0 0 0 0 0 0</pose>
 		  <inertial>
 			<pose>0 0 0 0 0 0</pose>
 			<mass>1.5</mass>
@@ -17,10 +17,10 @@
 			</inertia>
 		  </inertial>
 		  <collision name='base_link_collision_wing'>
-			<pose>0 0 0 0 0 0</pose>
+			<pose>0 0 -0.1 0 0 0</pose>
 			<geometry>
 			  <box>
-				<size>0.55 2.5 0.05</size>
+				<size>0.05 2.5 0.25</size>
 			  </box>
 			</geometry>
 			<surface>
@@ -36,10 +36,10 @@
 			</surface>
 		  </collision>
 		  <collision name='base_link_collision_mounts'>
-			<pose>-0.1 0 0 0 0 0</pose>
+			<pose>0 0 0.1 0 0 0</pose>
 			<geometry>
 			  <box>
-				<size>0.45 1.0 0.7</size>
+				<size>0.7 1.0 0.45</size>
 			  </box>
 			</geometry>
 			<surface>
@@ -52,7 +52,7 @@
 			</surface>
 		</collision>
 		  <visual name='base_link_visual'>
-			<pose>0 0 0 0 0 0</pose>
+			<pose>0 0 0 0 1.57 0</pose>
 			<geometry>
 			  <mesh>
 				<scale>0.001 0.001 0.001</scale>
@@ -104,11 +104,11 @@
 		<use_parent_model_frame>1</use_parent_model_frame>
 	  </axis>
 	</joint>
-
+	
 	<link name='rotor_0'>
-	  <pose>0.35 0.43 0.31 0 1.57 0</pose>
+		<pose>0.35 -0.43 0.35 0 0 0</pose>
 	  <inertial>
-		<pose>0 0 0 0 -0 0</pose>
+		<pose>0 0 0 0 0 0</pose>
 		<mass>0.005</mass>
 		<inertia>
 		  <ixx>9.75e-07</ixx>
@@ -123,8 +123,8 @@
 		<pose>0 0 0 0 0 0</pose>
 		<geometry>
 		  <cylinder>
-			<length>0.005</length>
-			<radius>0.1</radius>
+			<length>0.01</length>
+			<radius>0.2</radius>
 		  </cylinder>
 		</geometry>
 		<surface>
@@ -140,13 +140,13 @@
 		<pose>0 0 0 0 0 0</pose>
 		<geometry>
 		  <mesh>
-			<scale>1 1 1</scale>
+			<scale>2 2 2</scale>
 			<uri>model://standard_vtol/meshes/iris_prop_ccw.dae</uri>
 		  </mesh>
 		</geometry>
 		<material>
 		  <script>
-			<name>Gazebo/Blue</name>
+			<name>Gazebo/DarkGrey</name>
 			<uri>__default__</uri>
 		  </script>
 		</material>
@@ -173,9 +173,9 @@
 	</joint>
 
 	<link name='rotor_1'>
-	  <pose>0.35 0.43 -0.31 0 1.57 0</pose>
+		<pose>-0.35 0.43 0.35 0 0 0</pose>
 	  <inertial>
-		<pose>0 0 0 0 0 0</pose>
+		<pose>0 0 0 0 -0 0</pose>
 		<mass>0.005</mass>
 		<inertia>
 		  <ixx>9.75e-07</ixx>
@@ -190,8 +190,8 @@
 		<pose>0 0 0 0 0 0</pose>
 		<geometry>
 		  <cylinder>
-			<length>0.005</length>
-			<radius>0.1</radius>
+			<length>0.01</length>
+			<radius>0.2</radius>
 		  </cylinder>
 		</geometry>
 		<surface>
@@ -207,13 +207,13 @@
 		<pose>0 0 0 0 0 0</pose>
 		<geometry>
 		  <mesh>
-			<scale>1 1 1</scale>
+			<scale>2 2 2</scale>
 			<uri>model://standard_vtol/meshes/iris_prop_ccw.dae</uri>
 		  </mesh>
 		</geometry>
 		<material>
 		  <script>
-			<name>Gazebo/DarkGrey</name>
+			<name>Gazebo/Blue</name>
 			<uri>__default__</uri>
 		  </script>
 		</material>
@@ -240,7 +240,7 @@
 	</joint>
 
 	<link name='rotor_2'>
-	  <pose>0.35 -0.43 -0.31 0 1.57 0</pose>
+	  <pose>0.35 0.43 0.35 0 0 0</pose>
 	  <inertial>
 		<pose>0 0 0 0 0 0</pose>
 		<mass>0.005</mass>
@@ -257,8 +257,8 @@
 		<pose>0 0 0 0 0 0</pose>
 		<geometry>
 		  <cylinder>
-			<length>0.005</length>
-			<radius>0.1</radius>
+			<length>0.01</length>
+			<radius>0.2</radius>
 		  </cylinder>
 		</geometry>
 		<surface>
@@ -274,8 +274,8 @@
 		<pose>0 0 0 0 0 0</pose>
 		<geometry>
 		  <mesh>
-			<scale>1 1 1</scale>
-			<uri>model://standard_vtol/meshes/iris_prop_ccw.dae</uri>
+			<scale>2 2 2</scale>
+			<uri>model://standard_vtol/meshes/iris_prop_cw.dae</uri>
 		  </mesh>
 		</geometry>
 		<material>
@@ -306,8 +306,9 @@
 	  </axis>
 	</joint>
 
+
 	<link name='rotor_3'>
-	  <pose>0.35 -0.43 0.31 0 1.57 0</pose>
+	  <pose>-0.35 -0.43 0.35 0 0 0</pose>
 	  <inertial>
 		<pose>0 0 0 0 0 0</pose>
 		<mass>0.005</mass>
@@ -324,8 +325,8 @@
 		<pose>0 0 0 0 0 0</pose>
 		<geometry>
 		  <cylinder>
-			<length>0.005</length>
-			<radius>0.1</radius>
+			<length>0.01</length>
+			<radius>0.2</radius>
 		  </cylinder>
 		</geometry>
 		<surface>
@@ -341,8 +342,8 @@
 		<pose>0 0 0 0 0 0</pose>
 		<geometry>
 		  <mesh>
-			<scale>1 1 1</scale>
-			<uri>model://standard_vtol/meshes/iris_prop_ccw.dae</uri>
+			<scale>2 2 2</scale>
+			<uri>model://standard_vtol/meshes/iris_prop_cw.dae</uri>
 		  </mesh>
 		</geometry>
 		<material>
@@ -374,7 +375,7 @@
 	</joint>
 
 	<link name="rudder">
-		<pose>-1.3 0 -0.15 0 0 3.14</pose>
+		<pose>0.16 0 -1.31 0 1.57 0</pose>
 		<inertial>
 			<mass>0.00000001</mass>
 			<inertia>
@@ -426,7 +427,7 @@
 
 
 	<link name="elevator">
-	<pose>-1.32 0 0 0 3.14 0</pose>
+	<pose>0.01 0 -1.32 0 1.1 0</pose>
 	  <inertial>
 		<mass>0.00000001</mass>
 		<inertia>
