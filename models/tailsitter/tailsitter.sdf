@@ -1,3 +1,4 @@
+<?xml version='1.0'?>
 <sdf version='1.5'>
   <model name='tailsitter'>
     <link name='base_link'>
@@ -126,7 +127,7 @@
         </geometry>
         <material>
           <script>
-            <name>Gazebo/Blue</name>
+            <name>Gazebo/DarkGrey</name>
             <uri>__default__</uri>
           </script>
         </material>
@@ -192,7 +193,7 @@
         </geometry>
         <material>
           <script>
-            <name>Gazebo/DarkGrey</name>
+            <name>Gazebo/Blue</name>
             <uri>__default__</uri>
           </script>
         </material>
