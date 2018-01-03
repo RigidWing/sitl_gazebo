@@ -1,11 +1,11 @@
 <?xml version='1.0'?>
 <sdf version='1.6'>
 	<model name='rigid_wing'>
-		<pose>0 0 0 0 0 0</pose>
+		<!--<pose>0 0 0 0 -0 0</pose>-->
 		<link name='base_link'>
-		  <pose>0 0 0 0 0 0</pose>
+		  <pose>0 0 0 0 -0 0</pose>
 		  <inertial>
-			<pose>0 0 0 0 0 0</pose>
+			<pose>0 0 0 0 -0 0</pose>
 			<mass>1.5</mass>
 			<inertia>
 			  <ixx>0.197563</ixx>
@@ -17,7 +17,7 @@
 			</inertia>
 		  </inertial>
 		  <collision name='base_link_collision_wing'>
-			<pose>0 0 -0.1 0 0 0</pose>
+			<pose>0 0 -0.1 0 -0 0</pose>
 			<geometry>
 			  <box>
 				<size>0.05 2.5 0.25</size>
@@ -36,7 +36,7 @@
 			</surface>
 		  </collision>
 		  <collision name='base_link_collision_mounts'>
-			<pose>0 0 0.1 0 0 0</pose>
+			<pose>0 0 0.1 0 -0 0</pose>
 			<geometry>
 			  <box>
 				<size>0.7 1.0 0.45</size>
@@ -71,10 +71,10 @@
 		  <self_collide>0</self_collide>
 		</link>
 
-	<link name='standard_vtol/imu_link'>
-	  <pose>0 0 0 0 0 0</pose>
+	<link name='tailsitter/imu_link'>
+	  <pose>0 0 0 0 -0 0</pose>
 	  <inertial>
-		<pose>0 0 0 0 0 0</pose>
+		<pose>0 0 0 0 -0 0</pose>
 		<mass>0.015</mass>
 		<inertia>
 		  <ixx>1e-05</ixx>
@@ -86,8 +86,8 @@
 		</inertia>
 	  </inertial>
 	</link>
-	<joint name='standard_vtol/imu_joint' type='revolute'>
-	  <child>standard_vtol/imu_link</child>
+	<joint name='tailsitter/imu_joint' type='revolute'>
+	  <child>tailsitter/imu_link</child>
 	  <parent>base_link</parent>
 	  <axis>
 		<xyz>1 0 0</xyz>
@@ -106,7 +106,7 @@
 	</joint>
 	
 	<link name='rotor_0'>
-		<pose>0.35 -0.43 0.35 0 0 0</pose>
+		<pose>0.35 -0.43 0.35 0 -0 0</pose>
 	  <inertial>
 		<pose>0 0 0 0 0 0</pose>
 		<mass>0.005</mass>
@@ -120,7 +120,7 @@
 		</inertia>
 	  </inertial>
 	  <collision name='rotor_0_collision'>
-		<pose>0 0 0 0 0 0</pose>
+		<pose>0 0 0 0 -0 0</pose>
 		<geometry>
 		  <cylinder>
 			<length>0.01</length>
@@ -137,7 +137,7 @@
 		</surface>
 	  </collision>
 	  <visual name='rotor_0_visual'>
-		<pose>0 0 0 0 0 0</pose>
+		<pose>0 0 0 0 -0 0</pose>
 		<geometry>
 		  <mesh>
 			<scale>2 2 2</scale>
@@ -146,7 +146,7 @@
 		</geometry>
 		<material>
 		  <script>
-			<name>Gazebo/DarkGrey</name>
+			<name>Gazebo/Blue</name>
 			<uri>__default__</uri>
 		  </script>
 		</material>
@@ -173,7 +173,7 @@
 	</joint>
 
 	<link name='rotor_1'>
-		<pose>-0.35 0.43 0.35 0 0 0</pose>
+		<pose>-0.35 0.43 0.35 0 -0 0</pose>
 	  <inertial>
 		<pose>0 0 0 0 -0 0</pose>
 		<mass>0.005</mass>
@@ -187,7 +187,7 @@
 		</inertia>
 	  </inertial>
 	  <collision name='rotor_1_collision'>
-		<pose>0 0 0 0 0 0</pose>
+		<pose>0 0 0 0 -0 0</pose>
 		<geometry>
 		  <cylinder>
 			<length>0.01</length>
@@ -204,7 +204,7 @@
 		</surface>
 	  </collision>
 	  <visual name='rotor_1_visual'>
-		<pose>0 0 0 0 0 0</pose>
+		<pose>0 0 0 0 -0 0</pose>
 		<geometry>
 		  <mesh>
 			<scale>2 2 2</scale>
@@ -213,7 +213,7 @@
 		</geometry>
 		<material>
 		  <script>
-			<name>Gazebo/Blue</name>
+			<name>Gazebo/DarkGrey</name>
 			<uri>__default__</uri>
 		  </script>
 		</material>
@@ -240,9 +240,9 @@
 	</joint>
 
 	<link name='rotor_2'>
-	  <pose>0.35 0.43 0.35 0 0 0</pose>
+	  <pose>0.35 0.43 0.35 0 -0 0</pose>
 	  <inertial>
-		<pose>0 0 0 0 0 0</pose>
+		<pose>0 0 0 0 -0 0</pose>
 		<mass>0.005</mass>
 		<inertia>
 		  <ixx>9.75e-07</ixx>
@@ -254,7 +254,7 @@
 		</inertia>
 	  </inertial>
 	  <collision name='rotor_2_collision'>
-		<pose>0 0 0 0 0 0</pose>
+		<pose>0 0 0 0 -0 0</pose>
 		<geometry>
 		  <cylinder>
 			<length>0.01</length>
@@ -271,11 +271,11 @@
 		</surface>
 	  </collision>
 	  <visual name='rotor_2_visual'>
-		<pose>0 0 0 0 0 0</pose>
+		<pose>0 0 0 0 -0 0</pose>
 		<geometry>
 		  <mesh>
 			<scale>2 2 2</scale>
-			<uri>model://standard_vtol/meshes/iris_prop_cw.dae</uri>
+			<uri>model://standard_vtol/meshes/iris_prop_ccw.dae</uri>
 		  </mesh>
 		</geometry>
 		<material>
@@ -308,7 +308,7 @@
 
 
 	<link name='rotor_3'>
-	  <pose>-0.35 -0.43 0.35 0 0 0</pose>
+	  <pose>-0.35 -0.43 0.35 0 -0 0</pose>
 	  <inertial>
 		<pose>0 0 0 0 0 0</pose>
 		<mass>0.005</mass>
@@ -322,7 +322,7 @@
 		</inertia>
 	  </inertial>
 	  <collision name='rotor_3_collision'>
-		<pose>0 0 0 0 0 0</pose>
+		<pose>0 0 0 0 -0 0</pose>
 		<geometry>
 		  <cylinder>
 			<length>0.01</length>
@@ -339,11 +339,11 @@
 		</surface>
 	  </collision>
 	  <visual name='rotor_3_visual'>
-		<pose>0 0 0 0 0 0</pose>
+		<pose>0 0 0 0 -0 0</pose>
 		<geometry>
 		  <mesh>
 			<scale>2 2 2</scale>
-			<uri>model://standard_vtol/meshes/iris_prop_cw.dae</uri>
+			<uri>model://standard_vtol/meshes/iris_prop_ccw.dae</uri>
 		  </mesh>
 		</geometry>
 		<material>
@@ -388,7 +388,7 @@
 			</inertia>
 		</inertial>
 	  <visual name='rudder_visual'>
-		<pose>0 0 0 0 0 0</pose>
+		<pose>0 0 0 0 -0 0</pose>
 		<geometry>
 		  <mesh>
 			<scale>0.001 0.001 0.001</scale>
@@ -406,7 +406,7 @@
 	<joint name='rudder_joint' type='revolute'>
 	  <parent>base_link</parent>
 	  <child>rudder</child>
-	  <pose>0 0 0 0 0 0</pose>
+	  <pose>0 0 0 0 -0 0</pose>
 	  <axis>
 		<xyz>1 0 0</xyz>
 		<limit>
@@ -438,10 +438,10 @@
 		  <iyz>0.0</iyz>
 		  <izz>0.000001</izz>
 		</inertia>
-		<pose>0 0 0 0 0 0.0</pose>
+		<pose>0 0 0 0 -0 0</pose>
 	  </inertial>
 	  <visual name='elevator_visual'>
-		<pose>0 0 0 0 0 0</pose>
+		<pose>0 0 0 0 -0 0</pose>
 		<geometry>
 		  <mesh>
 			<scale>0.001 0.001 0.001</scale>
@@ -459,7 +459,7 @@
 	<joint name='elevator_joint' type='revolute'>
 	  <parent>base_link</parent>
 	  <child>elevator</child>
-	  <pose> 0 0 0 0 0 0</pose>
+	  <pose> 0 0 0 0 -0 0</pose>
 	  <axis>
 		<xyz>0 1 0</xyz>
 		<limit>
@@ -611,7 +611,7 @@
 
 	<plugin name='rotors_gazebo_imu_plugin' filename='librotors_gazebo_imu_plugin.so'>
 	  <robotNamespace></robotNamespace>
-	  <linkName>standard_vtol/imu_link</linkName>
+	  <linkName>tailsitter/imu_link</linkName>
 	  <imuTopic>/imu</imuTopic>
 	  <gyroscopeNoiseDensity>0.0003394</gyroscopeNoiseDensity>
 	  <gyroscopeRandomWalk>3.8785e-05</gyroscopeRandomWalk>
@@ -646,7 +646,7 @@
 		<channel name="rotor0">
 		  <input_index>0</input_index>
 		  <input_offset>0</input_offset>
-		  <input_scaling>1500</input_scaling>
+		  <input_scaling>1200</input_scaling>
 		  <zero_position_disarmed>0</zero_position_disarmed>
 		  <zero_position_armed>0</zero_position_armed>
 		  <joint_control_type>velocity</joint_control_type>
@@ -655,7 +655,7 @@
 		<channel name="rotor1">
 		  <input_index>1</input_index>
 		  <input_offset>0</input_offset>
-		  <input_scaling>1500</input_scaling>
+		  <input_scaling>1200</input_scaling>
 		  <zero_position_disarmed>0</zero_position_disarmed>
 		  <zero_position_armed>0</zero_position_armed>
 		  <joint_control_type>velocity</joint_control_type>
@@ -664,7 +664,7 @@
 		<channel name="rotor2">
 		  <input_index>2</input_index>
 		  <input_offset>0</input_offset>
-		  <input_scaling>1500</input_scaling>
+		  <input_scaling>1200</input_scaling>
 		  <zero_position_disarmed>0</zero_position_disarmed>
 		  <zero_position_armed>0</zero_position_armed>
 		  <joint_control_type>velocity</joint_control_type>
@@ -673,7 +673,7 @@
 		<channel name="rotor3">
 		  <input_index>3</input_index>
 		  <input_offset>0</input_offset>
-		  <input_scaling>1500</input_scaling>
+		  <input_scaling>1200</input_scaling>
 		  <zero_position_disarmed>0</zero_position_disarmed>
 		  <zero_position_armed>0</zero_position_armed>
 		  <joint_control_type>velocity</joint_control_type>
@@ -701,6 +701,9 @@
 	  <elevator_joint>
 		elevator_joint
 	  </elevator_joint>
+	  <rudder_joint>
+		rudder_joint
+	  </rudder_joint>
 	</plugin>
 	<static>0</static>
   </model>
