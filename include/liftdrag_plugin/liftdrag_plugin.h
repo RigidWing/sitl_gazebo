@@ -19,6 +19,8 @@
 
 #include <string>
 #include <vector>
+// added (Jonas):
+//#include <stdio.h>
 
 #include "gazebo/common/Plugin.hh"
 #include "gazebo/physics/physics.hh"
