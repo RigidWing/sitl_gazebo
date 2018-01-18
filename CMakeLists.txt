@@ -176,6 +176,8 @@ set (msgs
   msgs/MotorSpeed.proto
   #msgs/Wind.proto
   msgs/sonarSens.proto
+  # KITEPOWER (Xander)
+  msgs/WindField.proto
 )
 PROTOBUF_GENERATE_CPP(PROTO_SRCS PROTO_HDRS ${msgs})
 add_library(mav_msgs SHARED ${PROTO_SRCS})
@@ -206,6 +208,8 @@ add_library(gazebo_geotagged_images_plugin SHARED src/gazebo_geotagged_images_pl
 add_library(gazebo_sonar_plugin SHARED src/gazebo_sonar_plugin.cpp)
 # added (Jonas):
 add_library(TetherForcePlugin SHARED src/gazebo_tether_force_plugin.cpp)
+# KITEPOWER (Xander)
+add_library(gazebo_wind_field_plugin SHARED src/gazebo_wind_field_plugin.cpp)
 
 set(plugins
   rotors_gazebo_controller_interface
@@ -220,6 +224,8 @@ set(plugins
   gazebo_sonar_plugin
   # added (Jonas):
   TetherForcePlugin
+  # KITEPOWER (Xander)
+  gazebo_wind_field_plugin
   )
 
 if (GSTREAMER_FOUND)

@@ -24,8 +24,19 @@
 #include "gazebo/physics/physics.hh"
 #include "gazebo/transport/TransportTypes.hh"
 
+// KITEPOWER (Xander)
+#include "../common.h"
+#include "common.h"
+#include <common.h>
+#include "WindField.pb.h"
+static const std::string kDefaultWindFieldSubTopic = "/wind_field";
+
+
 namespace gazebo
 {
+// KITEPOWER (Xander)
+typedef const boost::shared_ptr<const wind_field_msgs::msgs::WindField> WindFieldPtr;
+
   /// \brief A plugin that simulates lift and drag.
   class GAZEBO_VISIBLE LiftDragPlugin : public ModelPlugin
   {
@@ -134,6 +145,19 @@ namespace gazebo
 
     /// \brief SDF for this plugin;
     protected: sdf::ElementPtr sdf;
+
+    // KITEPOWER (Xander)
+    private:
+		transport::NodePtr node_handle_;
+		std::string wind_field_sub_topic_;
+		transport::SubscriberPtr wind_field_sub_;
+		void WindFieldCallback(WindFieldPtr &wind_field);
+		std::string namespace_;
+
+	// KITEPOWER (Xander)
+	protected:
+		double azimuth_wind;	// [rad/s]
+		double vel_wind;		// [m/s]
   };
 }
 #endif

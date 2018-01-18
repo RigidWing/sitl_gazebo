@@ -1,0 +1,11 @@
+syntax = "proto2";
+package wind_field_msgs.msgs;
+import "time.proto";
+
+message WindField
+{
+  required string frame_id = 1;
+  required gazebo.msgs.Time stamp = 2;
+  required double azimuth = 3;
+  required double velocity = 4;
+}

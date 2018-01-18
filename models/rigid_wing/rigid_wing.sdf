@@ -71,7 +71,7 @@
 		  <self_collide>0</self_collide>
 		</link>
 
-	<link name='tailsitter/imu_link'>
+	<link name='rigid_wing/imu_link'>
 	  <pose>0 0 0 0 -0 0</pose>
 	  <inertial>
 		<pose>0 0 0 0 -0 0</pose>
@@ -86,8 +86,8 @@
 		</inertia>
 	  </inertial>
 	</link>
-	<joint name='tailsitter/imu_joint' type='revolute'>
-	  <child>tailsitter/imu_link</child>
+	<joint name='rigid_wing/imu_joint' type='revolute'>
+	  <child>rigid_wing/imu_link</child>
 	  <parent>base_link</parent>
 	  <axis>
 		<xyz>1 0 0</xyz>
@@ -104,7 +104,7 @@
 		<use_parent_model_frame>1</use_parent_model_frame>
 	  </axis>
 	</joint>
-	
+
 	<link name='rotor_0'>
 		<pose>0.35 -0.43 0.35 0 -0 0</pose>
 	  <inertial>
@@ -408,11 +408,11 @@
 	  <child>rudder</child>
 	  <pose>0 0 0 0 -0 0</pose>
 	  <axis>
-		<xyz>1 0 0</xyz>
+		<xyz>0 0 1</xyz>
 		<limit>
 		  <!-- -30/+30 deg. -->
-		  <lower>-0.01</lower>
-		  <upper>0.01</upper>
+		  <lower>-0.53</lower>
+		  <upper>0.53</upper>
 		</limit>
 		<dynamics>
 		  <damping>1.000</damping>
@@ -478,49 +478,77 @@
 	  </physics>
 	</joint>
 
-	<plugin name="wing" filename="libLiftDragPlugin.so">
-	  <a0>0.05984281113</a0>
-	  <cla>4.752798721</cla>
-	  <cda>0.6417112299</cda>
-	  <cma>-1.8</cma>
-	  <alpha_stall>0.3391428111</alpha_stall>
-	  <cla_stall>-3.85</cla_stall>
-	  <cda_stall>-0.9233984055</cda_stall>
-	  <cma_stall>0</cma_stall>
-	  <cp>-0.05 0.3 0.05</cp>
-	  <area>0.12</area>
+	<plugin name="left_wing" filename="libLiftDragPlugin.so">
+	<robotNamespace></robotNamespace>
+	<!-- start: same as tailsitter -->
+      <a0>0.05984281113</a0>
+      <cla>4.752798721</cla>
+      <cda>0.6417112299</cda>
+      <cma>-1.8</cma>
+      <alpha_stall>0.6391428111</alpha_stall>
+      <cla_stall>-3.85</cla_stall>
+      <cda_stall>-0.9233984055</cda_stall>
+      <cma_stall>0</cma_stall>
+	<!-- end: same as tailsitter -->
+	  <cp>0.15 -0.4 0.0</cp>
+	  <area>0.5</area>
 	  <air_density>1.2041</air_density>
-	  <forward>1 0 0</forward>
-	  <upward>0 0 1</upward>
+	  <forward>0 0 1</forward>
+	  <upward>1 0 0</upward>
 	  <link_name>base_link</link_name>
-	  <control_joint_name>
-		elevator_joint
-	  </control_joint_name>
-	  <control_joint_rad_to_cl>-0.5</control_joint_rad_to_cl>
 	</plugin>
 
+	<plugin name="right_wing" filename="libLiftDragPlugin.so">
+	  <robotNamespace></robotNamespace>
+	<!-- start: same as tailsitter -->
+      <a0>0.05984281113</a0>
+      <cla>4.752798721</cla>
+      <cda>0.6417112299</cda>
+      <cma>-1.8</cma>
+      <alpha_stall>0.6391428111</alpha_stall>
+      <cla_stall>-3.85</cla_stall>
+      <cda_stall>-0.9233984055</cda_stall>
+      <cma_stall>0</cma_stall>
+	<!-- end: same as tailsitter -->
+	<cp>0.15 0.4 0.0</cp>
+	  <area>0.5</area>
+	  <air_density>1.2041</air_density>
+	  <forward>0 0 1</forward>
+	  <upward>1 0 0</upward>
+	  <link_name>base_link</link_name>
+	</plugin>
+	
+
 	<plugin name="elevator" filename="libLiftDragPlugin.so">
+	  <robotNamespace></robotNamespace>
 	  <a0>-0.2</a0>
+	<!-- start: same as tailsitter -->
 	  <cla>4.752798721</cla>
 	  <cda>0.6417112299</cda>
 	  <cma>-1.8</cma>
-	  <alpha_stall>0.3391428111</alpha_stall>
+	  <alpha_stall>0.7391428111</alpha_stall>
 	  <cla_stall>-3.85</cla_stall>
 	  <cda_stall>-0.9233984055</cda_stall>
 	  <cma_stall>0</cma_stall>
-	  <cp>-0.5 0 0</cp>
-	  <area>0.01</area>
+	<!-- end: same as tailsitter -->
+	  <cp>0 0 0</cp>
+	  <area>0.03</area>
+	<!-- start: same as tailsitter -->
 	  <air_density>1.2041</air_density>
-	  <forward>1 0 0</forward>
-	  <upward>0 0 1</upward>
+	  <forward>0 0 1</forward>
+	<!-- end: same as tailsitter -->
+	  <upward>1 0 0</upward>
 	  <link_name>base_link</link_name>
+	<!-- start: same as tailsitter -->
 	  <control_joint_name>
 		elevator_joint
 	  </control_joint_name>
-	  <control_joint_rad_to_cl>-4.0</control_joint_rad_to_cl>
+	<!-- end: same as tailsitter -->
 	</plugin>
 
 	<plugin name="rudder" filename="libLiftDragPlugin.so">
+	  <robotNamespace></robotNamespace>
+	<!-- start: same as tailsitter -->
 	  <a0>0.0</a0>
 	  <cla>4.752798721</cla>
 	  <cda>0.6417112299</cda>
@@ -529,10 +557,13 @@
 	  <cla_stall>-3.85</cla_stall>
 	  <cda_stall>-0.9233984055</cda_stall>
 	  <cma_stall>0</cma_stall>
-	  <cp>-0.5 0 0.05</cp>
-	  <area>0.02</area>
+	<!-- end: same as tailsitter -->
+	  <cp>0 0 0</cp>
+	<!-- start: same as tailsitter -->
+	  <area>0.05</area>
 	  <air_density>1.2041</air_density>
-	  <forward>1 0 0</forward>
+	<!-- end: same as tailsitter -->
+	  <forward>0 0 1</forward>
 	  <upward>0 1 0</upward>
 	  <link_name>base_link</link_name>
 	</plugin>
@@ -609,34 +640,31 @@
 	  <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
 	</plugin>
 
-	<plugin name='rotors_gazebo_imu_plugin' filename='librotors_gazebo_imu_plugin.so'>
-	  <robotNamespace></robotNamespace>
-	  <linkName>tailsitter/imu_link</linkName>
-	  <imuTopic>/imu</imuTopic>
-	  <gyroscopeNoiseDensity>0.0003394</gyroscopeNoiseDensity>
-	  <gyroscopeRandomWalk>3.8785e-05</gyroscopeRandomWalk>
-	  <gyroscopeBiasCorrelationTime>1000.0</gyroscopeBiasCorrelationTime>
-	  <gyroscopeTurnOnBiasSigma>0.0087</gyroscopeTurnOnBiasSigma>
-	  <accelerometerNoiseDensity>0.004</accelerometerNoiseDensity>
-	  <accelerometerRandomWalk>0.006</accelerometerRandomWalk>
-	  <accelerometerBiasCorrelationTime>300.0</accelerometerBiasCorrelationTime>
-	  <accelerometerTurnOnBiasSigma>0.196</accelerometerTurnOnBiasSigma>
-	</plugin>
+    <plugin name='rotors_gazebo_imu_plugin' filename='librotors_gazebo_imu_plugin.so'>
+      <robotNamespace></robotNamespace>
+      <linkName>rigid_wing/imu_link</linkName>
+      <imuTopic>/imu</imuTopic>
+      <gyroscopeNoiseDensity>0.0003394</gyroscopeNoiseDensity>
+      <gyroscopeRandomWalk>3.8785e-05</gyroscopeRandomWalk>
+      <gyroscopeBiasCorrelationTime>1000.0</gyroscopeBiasCorrelationTime>
+      <gyroscopeTurnOnBiasSigma>0.0087</gyroscopeTurnOnBiasSigma>
+      <accelerometerNoiseDensity>0.004</accelerometerNoiseDensity>
+      <accelerometerRandomWalk>0.006</accelerometerRandomWalk>
+      <accelerometerBiasCorrelationTime>300.0</accelerometerBiasCorrelationTime>
+      <accelerometerTurnOnBiasSigma>0.196</accelerometerTurnOnBiasSigma>
+    </plugin>
 
-	<!--
-	<plugin name='wind_plugin' filename='librotors_gazebo_wind_plugin.so'>
+	<plugin name='wind_field_plugin' filename='libgazebo_wind_field_plugin.so'>
+	  <robotNamespace></robotNamespace>
 	  <frameId>base_link</frameId>
 	  <linkName>base_link</linkName>
-	  <robotNamespace/>
-	  <xyzOffset>1 0 0</xyzOffset>
-	  <windDirection>0 1 0</windDirection>
-	  <windForceMean>0.7</windForceMean>
-	  <windGustDirection>0 0 0</windGustDirection>
+	  <windAzimuth>3.14</windAzimuth>
+	  <windVelocityMean>0</windVelocityMean>
+	  <windGustAzimuth>0</windGustAzimuth>
 	  <windGustDuration>0</windGustDuration>
 	  <windGustStart>0</windGustStart>
-	  <windGustForceMean>0</windGustForceMean>
+	  <windGustVelocityMean>0</windGustVelocityMean>
 	</plugin>
-	-->
 
 	<plugin name='mavlink_interface' filename='librotors_gazebo_mavlink_interface.so'>
 	  <robotNamespace></robotNamespace>
@@ -679,17 +707,8 @@
 		  <joint_control_type>velocity</joint_control_type>
 		  <joint_name>rotor_3_joint</joint_name>
 		</channel>
-		<channel name="rudder">
-		  <input_index>5</input_index>
-		  <input_offset>0</input_offset>
-		  <input_scaling>1</input_scaling>
-		  <zero_position_disarmed>0</zero_position_disarmed>
-		  <zero_position_armed>0</zero_position_armed>
-		  <joint_control_type>position_kinematic</joint_control_type>
-		  <joint_name>rudder_joint</joint_name>
-		</channel>
 		<channel name="elevator">
-		  <input_index>7</input_index>
+		  <input_index>5</input_index>
 		  <input_offset>0</input_offset>
 		  <input_scaling>1</input_scaling>
 		  <zero_position_disarmed>0</zero_position_disarmed>
@@ -697,14 +716,17 @@
 		  <joint_control_type>position_kinematic</joint_control_type>
 		  <joint_name>elevator_joint</joint_name>
 		</channel>
+		<channel name="rudder">
+		  <input_index>6</input_index>
+		  <input_offset>0</input_offset>
+		  <input_scaling>1</input_scaling>
+		  <zero_position_disarmed>0</zero_position_disarmed>
+		  <zero_position_armed>0</zero_position_armed>
+		  <joint_control_type>position_kinematic</joint_control_type>
+		  <joint_name>rudder_joint</joint_name>
+		</channel>
 	  </control_channels>
-	  <elevator_joint>
-		elevator_joint
-	  </elevator_joint>
-	  <rudder_joint>
-		rudder_joint
-	  </rudder_joint>
 	</plugin>
-	<static>0</static>
+    <static>0</static>
   </model>
 </sdf>
