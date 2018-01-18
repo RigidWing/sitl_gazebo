@@ -8,17 +8,6 @@ using namespace gazebo;
 GZ_REGISTER_MODEL_PLUGIN(TetherForcePlugin)
 
 /////////////////////////////////////////////////
-TetherForcePlugin::TetherForcePlugin()
-{
-  this->ropeLength = 100;
-  this->dragConst = 0.002347995;
-  this->eModule = 121000;
-  this->mass = 0.5;
-  this->forceConstantB = 50;  //
-  this->forceConstantA = 0.0000000000000000000038574996959278355660346856330540251495056653024605258;    // 20*e^(-50)
-  this->i=0;
-}
-
 TetherForcePlugin::~TetherForcePlugin()
 {
 }
@@ -31,6 +20,15 @@ void TetherForcePlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   this->model = _model;
   this->sdf = _sdf;
 
+  getSdfParam<double>(_sdf,"ropeLength", ropeLength, ropeLength);
+  getSdfParam<double>(_sdf,"maxForce", forceConstantA, forceConstantA);
+  getSdfParam<double>(_sdf,"forceCoefficient", forceConstantB, forceConstantB);
+  getSdfParam<math::Vector3>(_sdf,"anchorLocation", anchorLocation, anchorLocation);
+
+  printf("[TetherPlugin] Rope length:...... %f [m]\r\n",ropeLength);
+  printf("[TetherPlugin] Max force:........ %f [N]\r\n",forceConstantA);
+  printf("[TetherPlugin] Force Coefficient: %f [-]\r\n",forceConstantB);
+  printf("[TetherPlugin] Anchor Location:  <%f, %f, %f>  [m]\r\n",anchorLocation[0],anchorLocation[1],anchorLocation[2]);
 
   if (_sdf->HasElement("link_name"))
   {
@@ -56,14 +54,15 @@ void TetherForcePlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 // Called by the world update start event
 void TetherForcePlugin::OnUpdate(const common::UpdateInfo & /*_info*/)
 {
-  math::Pose position = this->model->GetWorldPose();             // get the current position of the aircraft
-  double distance = position.pos.GetLength();                    // Distance between the Plane and the Groundstation
+  math::Vector3 position = this->link->GetWorldPose().pos;              // get the position of the aircraft
+  math::Vector3 position_relative = position -= anchorLocation;
+  double distance = position_relative.GetLength();                    // Distance between the Plane and the Groundstation
   math::Vector3 velocity = this->model->GetRelativeLinearVel();  // get the velocity of the aircraft
   double speed = velocity.GetLength();
-  math::Vector3 normalizedPosition = position.pos.Normalize();   // get direction of the tether
+  math::Vector3 normalizedPosition = position_relative.Normalize();   // get direction of the tether
 
   /* calculate the tether force */
-  double tetherForce = forceConstantA*exp(forceConstantB*distance/ropeLength);
+  double tetherForce = forceConstantA/(1+exp(forceConstantB*(ropeLength-distance)));
 
   /* calculate the dragforce */
   // calculate the speed perpendicular to the tether:
@@ -81,12 +80,10 @@ void TetherForcePlugin::OnUpdate(const common::UpdateInfo & /*_info*/)
     link_->AddForce(velocity.Normalize().operator*(-dragForce));
   }
 
-  // output current informations of the model, only for debugging purpose
-  if(i>100)
-  {
-    std::cout << tetherForce << "\t " << distance  << "\n";
-    i=0;
-  }
-  i++;
+  //// output current informations of the model, only for debugging purpose
+  //if(i++%100==0)
+  //{
+  //  std::cout << tetherForce << "\t " << velocity.Normalize().operator*(-dragForce) << "\t" << distance  << "\n";
+  //}
 
 }
