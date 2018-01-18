@@ -172,6 +172,9 @@ void LiftDragPlugin::OnUpdate()
 #else
   ignition::math::Vector3d vel = ignitionFromGazeboMath(this->link->GetWorldLinearVel(this->cp));
 #endif
+  // added (Jonas)
+  math::Vector3 constantWind(0,3,0); // 10m/s wind in y-direction
+  vel += constantWind;
   ignition::math::Vector3d velI = vel;
   velI.Normalize();
 

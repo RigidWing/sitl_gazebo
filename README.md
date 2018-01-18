@@ -2,6 +2,9 @@
 
 This is a flight simulator for multirotors, VTOL and fixed wing. It uses the motor model and other pieces from the RotorS simulator, but in contrast to RotorS has no dependency on ROS. This repository is in the process of being re-integrated into RotorS, which then will support ROS and MAVLink as transport options: https://github.com/ethz-asl/rotors_simulator
 
+included from ftero:
+- tether-force plugin for gazebo_plane
+
 **If you use this simulator in academic work, please cite RotorS as per the README in the above link.**
 
 ## Install Gazebo Simulator

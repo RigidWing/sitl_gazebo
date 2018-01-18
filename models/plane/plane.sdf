@@ -5,7 +5,7 @@
       <pose>0 0 0 0 0 0</pose>
       <inertial>
         <pose>0 0 0 0 0 0</pose>
-        <mass>1.5</mass>
+        <mass>0.5</mass>
         <inertia>
           <ixx>0.197563</ixx>
           <ixy>0</ixy>
@@ -53,11 +53,46 @@
       <velocity_decay/>
       <self_collide>0</self_collide>
     </link>
+    <link name='tether_att'>
+      <pose>0 0 -0.09 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.000000001</mass>
+        <inertia>
+          <ixx>0.197563</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.1458929</iyy>
+          <iyz>0</iyz>
+          <izz>0.1477</izz>
+        </inertia>
+      </inertial>
+      <visual name='rotor_puller_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.01</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Blue</name>
+            <uri>__default__</uri>
+          </script>
+        </material>
+      </visual>
+      <velocity_decay/>
+      <self_collide>0</self_collide>
+    </link>
+    <joint name='tether_att_joint' type='revolute'>
+      <child>tether_att</child>
+      <parent>base_link</parent>
+    </joint>
     <link name='plane/imu_link'>
       <pose>0 0 0 0 0 0</pose>
       <inertial>
         <pose>0 0 0 0 0 0</pose>
-        <mass>0.015</mass>
+        <mass>0.005</mass>
         <inertia>
           <ixx>1e-05</ixx>
           <ixy>0</ixy>
@@ -90,7 +125,7 @@
       <inertial>
         <!-- place holder -->
         <pose>-0.041 0 -0.162 0 0 0</pose>
-        <mass>0.1</mass>
+        <mass>0.0333333333</mass>
         <inertia>
           <ixx>0.001</ixx>
           <ixy>0</ixy>
@@ -509,6 +544,9 @@
           <joint_name>elevator_joint</joint_name>
         </channel>
       </control_channels>
+    </plugin>
+    <plugin name="TetherForcePlugin" filename="libTetherForcePlugin.so">
+      <link_name>tether_att</link_name>
     </plugin>
     <static>0</static>
   </model>
