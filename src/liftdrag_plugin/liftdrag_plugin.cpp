@@ -163,9 +163,6 @@ void LiftDragPlugin::OnUpdate()
   GZ_ASSERT(this->link, "Link was NULL");
   // get linear velocity at cp in inertial frame
   math::Vector3 vel = this->link->GetWorldLinearVel(this->cp);
-  // added (Jonas)
-  math::Vector3 constantWind(0,3,0); // 10m/s wind in y-direction
-  vel+=constantWind;
   math::Vector3 velI = vel;
   velI.Normalize();
 
