@@ -204,6 +204,8 @@ add_library(rotors_gazebo_mavlink_interface SHARED src/gazebo_mavlink_interface.
 #add_library(rotors_gazebo_wind_plugin SHARED src/gazebo_wind_plugin.cpp)
 add_library(gazebo_geotagged_images_plugin SHARED src/gazebo_geotagged_images_plugin.cpp)
 add_library(gazebo_sonar_plugin SHARED src/gazebo_sonar_plugin.cpp)
+# added (Jonas):
+add_library(TetherForcePlugin SHARED src/gazebo_tether_force_plugin.cpp)
 
 set(plugins
   rotors_gazebo_controller_interface
@@ -216,6 +218,8 @@ set(plugins
   #rotors_gazebo_wind_plugin
   gazebo_geotagged_images_plugin
   gazebo_sonar_plugin
+  # added (Jonas):
+  TetherForcePlugin
   )
 
 if (GSTREAMER_FOUND)
