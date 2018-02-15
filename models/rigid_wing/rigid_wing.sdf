@@ -5,15 +5,15 @@
 		<link name='base_link'>
 		  <pose>0 0 0 0 -0 0</pose>
 		  <inertial>
-			<pose>0 0 0 0 -0 0</pose>
-			<mass>1.5</mass>
+			<pose>0 0 -0.1 0 -0 0</pose>
+			<mass>17</mass>
 			<inertia>
-			  <ixx>0.197563</ixx>
+			  <ixx>1</ixx>
 			  <ixy>0</ixy>
 			  <ixz>0</ixz>
-			  <iyy>0.1458929</iyy>
+			  <iyy>1</iyy>
 			  <iyz>0</iyz>
-			  <izz>0.1477</izz>
+			  <izz>1</izz>
 			</inertia>
 		  </inertial>
 		  <collision name='base_link_collision_wing'>
@@ -72,7 +72,7 @@
 		</link>
 
 	<link name='tether'>
-	  <pose>-0.7 0 0 0 0 0</pose>
+	  <pose>0 0 -0.2 0 0 0</pose>
 	  <inertial>
 		<pose>0 0 0 0 0 0</pose>
 		<mass>0.01</mass>
@@ -85,7 +85,7 @@
 		  <izz>0.01</izz>
 		 </inertia>
 	  </inertial>
-	  <visual name='tether_visual'>
+	  <!--<visual name='tether_visual'>
 	    <pose>0 0 0 0 0 0</pose>
 	    <geometry>
 	      <sphere>
@@ -98,51 +98,14 @@
 		<uri>__default__</uri>
 	      </script>
 	    </material>
-	  </visual>
-	  <visual name='tether_connection_visual_A'>
-	    <pose>0.346 0.2 0 0 1.571 0.524</pose>
-	    <geometry>
-	      <cylinder>
-	        <radius>0.005</radius>
-	        <length>0.8</length>
-	      </cylinder>
-	    </geometry>
-	    <material>
-	      <script>
-		<name>Gazebo/Black</name>
-		<uri>__default__</uri>
-	      </script>
-	    </material>
-	  </visual>
-	  <visual name='tether_connection_visual_B'>
-	    <pose>0.346 -0.2 0 0 1.571 -0.524</pose>
-	    <geometry>
-	      <cylinder>
-	        <radius>0.005</radius>
-	        <length>0.8</length>
-	      </cylinder>
-	    </geometry>
-	    <material>
-	      <script>
-		<name>Gazebo/Black</name>
-		<uri>__default__</uri>
-	      </script>
-	    </material>
-	  </visual>
+	  </visual>-->
 	  <velocity_decay/>
 	  <self_collide>0</self_collide>
 	</link>
-	<joint name='tether_joint' type='revolute'>
+	<joint name='tether_joint' type='fixed'>
 		<child>tether</child>
 		<parent>base_link</parent>
-		<pose>0.7 0 0 0 0 0</pose>
-		<axis>
-		  <xyz>0 1 0</xyz>
-		<limit>
-		    <lower>-1.571</lower>
-		    <upper>1.571</upper>
-		</limit>
-		</axis>
+		<pose>0 0 0 0 0 0</pose>
 	</joint>
 	
 
@@ -650,12 +613,12 @@
 	  <turningDirection>ccw</turningDirection>
 	  <timeConstantUp>0.0125</timeConstantUp>
 	  <timeConstantDown>0.025</timeConstantDown>
-	  <maxRotVelocity>1500</maxRotVelocity>
-	  <motorConstant>8.54858e-06</motorConstant>
+	  <maxRotVelocity>728</maxRotVelocity>
+	  <motorConstant>0.000194</motorConstant>
 	  <momentConstant>0.06</momentConstant>
 	  <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
 	  <motorNumber>0</motorNumber>
-	  <rotorDragCoefficient>0.000806428</rotorDragCoefficient>
+	  <rotorDragCoefficient>8.06428e-5</rotorDragCoefficient>
       <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
       <motorSpeedPubTopic>/motor_speed/0</motorSpeedPubTopic>
       <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
@@ -668,12 +631,12 @@
 	  <turningDirection>ccw</turningDirection>
 	  <timeConstantUp>0.0125</timeConstantUp>
 	  <timeConstantDown>0.025</timeConstantDown>
-	  <maxRotVelocity>1500</maxRotVelocity>
-	  <motorConstant>8.54858e-06</motorConstant>
+	  <maxRotVelocity>728</maxRotVelocity>
+	  <motorConstant>0.000194</motorConstant>
 	  <momentConstant>0.06</momentConstant>
 	  <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
 	  <motorNumber>1</motorNumber>
-	  <rotorDragCoefficient>0.000806428</rotorDragCoefficient>
+	  <rotorDragCoefficient>8.06428e-5</rotorDragCoefficient>
       <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
       <motorSpeedPubTopic>/motor_speed/1</motorSpeedPubTopic>
       <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
@@ -686,12 +649,12 @@
 	  <turningDirection>cw</turningDirection>
 	  <timeConstantUp>0.0125</timeConstantUp>
 	  <timeConstantDown>0.025</timeConstantDown>
-	  <maxRotVelocity>1500</maxRotVelocity>
-	  <motorConstant>8.54858e-06</motorConstant>
+	  <maxRotVelocity>728</maxRotVelocity>
+	  <motorConstant>0.000194</motorConstant>
 	  <momentConstant>0.06</momentConstant>
 	  <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
 	  <motorNumber>2</motorNumber>
-	  <rotorDragCoefficient>0.000806428</rotorDragCoefficient>
+	  <rotorDragCoefficient>8.06428e-5</rotorDragCoefficient>
 	  <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
 	  <motorSpeedPubTopic>/motor_speed/2</motorSpeedPubTopic>
 	  <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
@@ -704,12 +667,12 @@
 	  <turningDirection>cw</turningDirection>
 	  <timeConstantUp>0.0125</timeConstantUp>
 	  <timeConstantDown>0.025</timeConstantDown>
-	  <maxRotVelocity>1500</maxRotVelocity>
-	  <motorConstant>8.54858e-06</motorConstant>
+	  <maxRotVelocity>728</maxRotVelocity>
+	  <motorConstant>0.000194</motorConstant>
 	  <momentConstant>0.06</momentConstant>
 	  <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
 	  <motorNumber>3</motorNumber>
-	  <rotorDragCoefficient>0.000806428</rotorDragCoefficient>
+	  <rotorDragCoefficient>8.06428e-5</rotorDragCoefficient>
 	  <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
 	  <motorSpeedPubTopic>/motor_speed/3</motorSpeedPubTopic>
 	  <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
@@ -807,7 +770,7 @@
 	  <ropeLength>100</ropeLength>
 	  <anchorLocation>0 0 0</anchorLocation>
 	  <maxForce>1000</maxForce>
-	  <forceCoefficient>0.5</forceCoefficient>
+	  <forceCoefficient>4</forceCoefficient>
 	</plugin>
     <static>0</static>
   </model>

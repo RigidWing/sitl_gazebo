@@ -62,6 +62,9 @@ void TetherForcePlugin::OnUpdate(const common::UpdateInfo & /*_info*/)
   math::Vector3 normalizedPosition = position_relative.Normalize();   // get direction of the tether
 
   /* calculate the tether force */
+  //forceConstantA = 0.00000000000000000000385749969592783556603468563305;
+  //forceConstantB = 50.0;
+  //double tetherForce = forceConstantA*exp(forceConstantB*distance/ropeLength);
   double tetherForce = forceConstantA/(1+exp(forceConstantB*(ropeLength-distance)));
 
   /* calculate the dragforce */
@@ -80,10 +83,10 @@ void TetherForcePlugin::OnUpdate(const common::UpdateInfo & /*_info*/)
     link_->AddForce(velocity.Normalize().operator*(-dragForce));
   }
 
-  //// output current informations of the model, only for debugging purpose
-  //if(i++%100==0)
-  //{
-  //  std::cout << tetherForce << "\t " << velocity.Normalize().operator*(-dragForce) << "\t" << distance  << "\n";
-  //}
+  // output current informations of the model, only for debugging purpose
+  if(i++%100==0)
+  {
+    std::cout << tetherForce << "\t " << velocity.Normalize().operator*(-dragForce) << "\t" << distance  << "\n";
+  }
 
 }
