@@ -697,7 +697,7 @@
 	  <frameId>base_link</frameId>
 	  <linkName>base_link</linkName>
 	  <windAzimuth>3.14</windAzimuth>
-	  <windVelocityMean>0</windVelocityMean>
+	  <windVelocityMean>8</windVelocityMean>
 	  <windGustAzimuth>0</windGustAzimuth>
 	  <windGustDuration>0</windGustDuration>
 	  <windGustStart>0</windGustStart>
