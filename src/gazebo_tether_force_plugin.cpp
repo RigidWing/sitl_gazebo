@@ -25,10 +25,10 @@ void TetherForcePlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   getSdfParam<double>(_sdf,"forceCoefficient", forceConstantB, forceConstantB);
   getSdfParam<math::Vector3>(_sdf,"anchorLocation", anchorLocation, anchorLocation);
 
-  printf("[TetherPlugin] Rope length:...... %f [m]\r\n",ropeLength);
-  printf("[TetherPlugin] Max force:........ %f [N]\r\n",forceConstantA);
-  printf("[TetherPlugin] Force Coefficient: %f [-]\r\n",forceConstantB);
-  printf("[TetherPlugin] Anchor Location:  <%f, %f, %f>  [m]\r\n",anchorLocation[0],anchorLocation[1],anchorLocation[2]);
+//  printf("[TetherPlugin] Rope length:...... %f [m]\r\n",ropeLength);
+//  printf("[TetherPlugin] Max force:........ %f [N]\r\n",forceConstantA);
+//  printf("[TetherPlugin] Force Coefficient: %f [-]\r\n",forceConstantB);
+//  printf("[TetherPlugin] Anchor Location:  <%f, %f, %f>  [m]\r\n",anchorLocation[0],anchorLocation[1],anchorLocation[2]);
 
   if (_sdf->HasElement("link_name"))
   {
@@ -86,7 +86,7 @@ void TetherForcePlugin::OnUpdate(const common::UpdateInfo & /*_info*/)
   // output current informations of the model, only for debugging purpose
   if(i++%100==0)
   {
-    std::cout << tetherForce << "\t " << velocity.Normalize().operator*(-dragForce) << "\t" << distance  << "\n";
+  //  std::cout << tetherForce << "\t " << velocity.Normalize().operator*(-dragForce) << "\t" << distance  << "\n";
   }
 
 }
