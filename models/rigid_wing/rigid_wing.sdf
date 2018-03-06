@@ -52,7 +52,7 @@
 			</surface>
 		</collision>
 		  <visual name='base_link_visual'>
-			<pose>0 0 0 0 1.57 0</pose>
+			<pose>0 0 0.04 0 1.57 0</pose>
 			<geometry>
 			  <mesh>
 				<scale>0.001 0.001 0.001</scale>
@@ -413,7 +413,7 @@
     </joint>
 
 	<link name="rudder">
-		<pose>0.16 0 -1.31 0 1.57 0</pose>
+		<pose>0.05 -0.004 -1.29 0 1.57 0</pose>
       <inertial>
         <mass>0.00000001</mass>
         <inertia>
@@ -444,7 +444,7 @@
 	<joint name='rudder_joint' type='revolute'>
       <parent>base_link</parent>
 	  <child>rudder</child>
-	  <pose>0 0 0 0 -0 0</pose>
+	  <pose>0.005 0.005 0 0 -0 0</pose>
       <axis>
 		<xyz>0 0 1</xyz>
         <limit>
@@ -465,7 +465,7 @@
 
 
 	<link name="elevator">
-	<pose>0.01 0 -1.32 0 1.1 0</pose>
+	<pose>0.021 0 -1.322 1.57 1.57  0</pose>
 	  <inertial>
 		<mass>0.00000001</mass>
 		<inertia>
@@ -497,9 +497,9 @@
 	<joint name='elevator_joint' type='revolute'>
       <parent>base_link</parent>
 	  <child>elevator</child>
-	  <pose> 0 0 0 0 -0 0</pose>
+	  <pose> -0.005 0 0 0 -0 0</pose>
       <axis>
-        <xyz>0 1 0</xyz>
+        <xyz>0 0 1</xyz>
         <limit>
           <!-- -30/+30 deg. -->
           <lower>-0.53</lower>
