@@ -257,7 +257,7 @@
 	<!-- KitePower -->
 	<!--<pose>0.35 -0.43 0.35 0 -0 0</pose>->
 	<!-- KiteX -->
-		<pose>0.35 -0.43 0.05 0 -0 0</pose>
+		<pose>0.30 -0.2 0.05 0 -0 0</pose>
       <inertial>
 		<pose>0 0 0 0 0 0</pose>
 		<mass>0.005</mass>
@@ -275,7 +275,7 @@
 		<geometry>
 		  <cylinder>
 			<length>0.01</length>
-			<radius>0.2</radius>
+			<radius>0.1</radius>
 		  </cylinder>
 		</geometry>
 		<surface>
@@ -292,7 +292,7 @@
 		<geometry>
 		  <mesh>
 			  <!-- KitePower : <scale>2 2 2</scale> -->
-			<scale>1 1 1</scale>
+			<scale>0.5 0.5 0.5</scale>
 			<uri>model://standard_vtol/meshes/iris_prop_ccw.dae</uri>
 		  </mesh>
 		</geometry>
@@ -328,7 +328,7 @@
 	<!-- KitePower -->
 	<!--<pose>-0.35 0.43 0.35 0 -0 0</pose>-->
 	<!-- KiteX -->
-		<pose>-0.35 0.43 0.05 0 -0 0</pose>
+		<pose>-0.20 0.20 0.05 0 -0 0</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -346,7 +346,7 @@
         <geometry>
           <cylinder>
 			<length>0.01</length>
-			<radius>0.2</radius>
+			<radius>0.1</radius>
           </cylinder>
         </geometry>
         <surface>
@@ -363,7 +363,7 @@
         <geometry>
           <mesh>
 			  <!-- KitePower : <scale>2 2 2</scale> -->
-			<scale>1 1 1</scale>
+			<scale>0.5 0.5 0.5</scale>
 			<uri>model://standard_vtol/meshes/iris_prop_ccw.dae</uri>
           </mesh>
         </geometry>
@@ -399,7 +399,7 @@
 	<!-- KitePower -->
 	<!--<pose>0.35 0.43 0.35 0 -0 0</pose>-->
 	<!-- KiteX -->
-	  <pose>0.35 0.43 0.05 0 -0 0</pose>
+	  <pose>0.30 0.2 0.05 0 -0 0</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -417,7 +417,7 @@
         <geometry>
           <cylinder>
 			<length>0.01</length>
-			<radius>0.2</radius>
+			<radius>0.1</radius>
           </cylinder>
         </geometry>
         <surface>
@@ -434,7 +434,7 @@
         <geometry>
           <mesh>
 			  <!-- KitePower : <scale>2 2 2</scale> -->
-			<scale>1 1 1</scale>
+			<scale>0.5 0.5 0.5</scale>
 			<uri>model://standard_vtol/meshes/iris_prop_ccw.dae</uri>
           </mesh>
         </geometry>
@@ -471,7 +471,7 @@
 	<!-- KitePower -->
 	<!--<pose>-0.35 -0.43 0.35 0 -0 0</pose>-->
 	<!-- KiteX -->
-	  <pose>-0.35 -0.43 0.05 0 -0 0</pose>
+	  <pose>-0.20 -0.2 0.05 0 -0 0</pose>
       <inertial>
 		<pose>0 0 0 0 0 0</pose>
         <mass>0.005</mass>
@@ -489,7 +489,7 @@
         <geometry>
           <cylinder>
 			<length>0.01</length>
-			<radius>0.2</radius>
+			<radius>0.1</radius>
           </cylinder>
         </geometry>
         <surface>
@@ -506,7 +506,7 @@
         <geometry>
           <mesh>
 			  <!-- KitePower : <scale>2 2 2</scale> -->
-			<scale>1 1 1</scale>
+			<scale>0.5 0.5 0.5</scale>
 			<uri>model://standard_vtol/meshes/iris_prop_ccw.dae</uri>
           </mesh>
         </geometry>
@@ -592,7 +592,7 @@
 
     <!-- KiteX -->
 	<link name="rudder">
-		<pose>-0.10 -0.005 -0.7 0 1.57 0</pose>
+		<pose>-0.12 -0.005 -0.7 0 1.57 0</pose>
       <inertial>
         <mass>0.00000001</mass>
         <inertia>
@@ -734,7 +734,7 @@
 	  <child>elevator</child>
 	  <pose> -0.005 0 0 0 -0 0</pose>
       <axis>
-        <xyz>0 0 1</xyz>
+        <xyz>0 0 -1</xyz>
         <limit>
           <!-- -30/+30 deg. -->
 		  <!--<lower>-0.53</lower>
@@ -880,7 +880,7 @@
 	   span:    600 mm-->
 	<plugin name="elevator" filename="libLiftDragPlugin.so">
 	  <robotNamespace></robotNamespace>
-	  <a0>0.4189</a0> <!-- ~24 deg positive at neutral position-->
+	  <a0>0</a0>
 	<!-- start: same as tailsitter -->
 	  <cla>4.752798721</cla>
 	  <cda>0.6417112299</cda>
