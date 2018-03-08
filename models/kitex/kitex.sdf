@@ -49,16 +49,16 @@
 			</surface>
 		</collision>
 		<visual name='base_link_wing_visual'>
-			<pose>0 0.5 0 1.57 1.57 0</pose>
+			<pose>0 0 0 0 -1.57 0</pose>
 			<geometry>
 			  <mesh>
-				<scale>0.004 0.004 0.004</scale>
-				<uri>model://rigid_wing/meshes/rudder.dae</uri>
+				<scale>0.001 0.001 0.001</scale>
+				<uri>model://kitex/meshes/quadkitex_main.dae</uri>
 			  </mesh>
 			</geometry>
 			<material>
 			  <script>
-				<name>Gazebo/White</name>
+				<name>Gazebo/Orange</name>
 				<uri>__default__</uri>
 			  </script>
 			</material>
@@ -73,41 +73,11 @@
 			</geometry>
 			<material>
 			  <script>
-				<name>Gazebo/White</name>
+				<name>Gazebo/Orange</name>
 				<uri>__default__</uri>
 			  </script>
 			</material>
 		</visual>
-	  <visual name='V-wing-left_visual'>
-		<pose>-0.2 -0.2 0 1.57 1.57 1.57</pose>
-		<geometry>
-		  <mesh>
-			<scale>0.004 0.002 0.002</scale>
-			<uri>model://rigid_wing/meshes/rudder.dae</uri>
-		  </mesh>
-		</geometry>
-		<material>
-		  <script>
-			<name>Gazebo/Blue</name>
-			<uri>__default__</uri>
-		  </script>
-		</material>
-	  </visual>
-	  <visual name='V-wing-right_visual'>
-		<pose>-0.2 0.2 0 1.57 1.57 1.57</pose>
-		<geometry>
-		  <mesh>
-			<scale>0.004 0.002 0.002</scale>
-			<uri>model://rigid_wing/meshes/rudder.dae</uri>
-		  </mesh>
-		</geometry>
-		<material>
-		  <script>
-			<name>Gazebo/Blue</name>
-			<uri>__default__</uri>
-		  </script>
-		</material>
-	  </visual>
 		<gravity>1</gravity>
 		<velocity_decay/>
 		<self_collide>0</self_collide>
@@ -148,7 +118,7 @@
 	</joint>
 
 	<link name='rotor_0'>
-		<pose>0.30 -0.2 0.05 0 -0 0</pose>
+		<pose>0.31 -0.31 0.05 0 -0 0</pose>
       <inertial>
 		<pose>0 0 0 0 0 0</pose>
 		<mass>0.005</mass>
@@ -215,7 +185,7 @@
     </joint>
 
     <link name='rotor_1'>
-		<pose>-0.20 0.20 0.05 0 -0 0</pose>
+		<pose>-0.31 0.31 0.05 0 -0 0</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -282,7 +252,7 @@
     </joint>
 
     <link name='rotor_2'>
-	  <pose>0.30 0.2 0.05 0 -0 0</pose>
+	  <pose>0.31 0.31 0.05 0 -0 0</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -350,7 +320,7 @@
 
 
     <link name='rotor_3'>
-	  <pose>-0.20 -0.2 0.05 0 -0 0</pose>
+	  <pose>-0.31 -0.31 0.05 0 -0 0</pose>
       <inertial>
 		<pose>0 0 0 0 0 0</pose>
         <mass>0.005</mass>
@@ -417,7 +387,7 @@
     </joint>
 
 	<link name="rudder">
-		<pose>-0.12 -0.005 -0.7 0 1.57 0</pose>
+		<pose>0 0 -0.7 0 0 0</pose>
       <inertial>
         <mass>0.00000001</mass>
         <inertia>
@@ -430,11 +400,11 @@
         </inertia>
       </inertial>
 	  <visual name='rudder_visual'>
-		<pose>0 0 0 0 -0 0</pose>
+		<pose>0 0 0 0 0 1.57</pose>
 		<geometry>
 		  <mesh>
 			<scale>0.001 0.001 0.001</scale>
-			<uri>model://rigid_wing/meshes/rudder.dae</uri>
+			<uri>model://kitex/meshes/rudderkitex.dae</uri>
 		  </mesh>
 		</geometry>
 		<material>
@@ -450,7 +420,7 @@
 	  <child>rudder</child>
 	  <pose>0.005 0.005 0 0 -0 0</pose>
       <axis>
-		<xyz>0 0 1</xyz>
+		<xyz>1 0 0</xyz>
         <limit>
           <!-- -30/+30 deg. -->
           <lower>-0.53</lower>
@@ -468,7 +438,7 @@
   </joint>
 
 	<link name="elevator">
-	<pose>0 0 -.63 1.57 1.57  0</pose>
+	<pose>0 0 -.63 0 0 0</pose>
 	  <inertial>
 		<mass>0.00000001</mass>
 		<inertia>
@@ -482,11 +452,11 @@
 		<pose>0 0 0 0 -0 0</pose>
 	  </inertial>
 	  <visual name='elevator_visual'>
-		<pose>0 0 0 0 -0 0</pose>
+		<pose>0 0 0 -1.57 -1.57 1.57</pose>
 		<geometry>
 		  <mesh>
 			<scale>0.001 0.001 0.0005</scale>
-			<uri>model://rigid_wing/meshes/elevator.dae</uri>
+			<uri>model://kitex/meshes/elevatorkitex.dae</uri>
 		  </mesh>
 		</geometry>
 		<material>
@@ -500,9 +470,9 @@
 	<joint name='elevator_joint' type='revolute'>
       <parent>base_link</parent>
 	  <child>elevator</child>
-	  <pose> -0.005 0 0 0 -0 0</pose>
+	  <pose> 0 0 0 0 -0 0</pose>
       <axis>
-        <xyz>0 0 -1</xyz>
+        <xyz>0 1 0</xyz>
         <limit>
           <!-- -40/+40 deg. -->
           <lower>-0.6981</lower>
