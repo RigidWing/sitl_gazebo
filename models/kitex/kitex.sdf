@@ -475,8 +475,8 @@
         <xyz>0 1 0</xyz>
         <limit>
           <!-- -40/+40 deg. -->
-          <lower>-0.6981</lower>
-          <upper>0.6981</upper>
+		  <upper>-1.117</upper>
+		  <lower>0.304</lower>
         </limit>
         <dynamics>
           <damping>1.000</damping>
@@ -490,22 +490,20 @@
     </joint>
 
     <!-- KiteX model: Main wing - Left -->
-    <!-- profile: ??
+    <!-- profile: Selig 8037
 	   cord:    100 mm
 	   span:    1400/2=700 mm
 	   thickness 20 mm -->
 	<plugin name="left_wing" filename="libLiftDragPlugin.so">
 	<robotNamespace></robotNamespace>
 	  <a0>0.087</a0><!-- 5 deg incidence -->
-	  <cla>5.72</cla><!--  1.5/15 deg -> 5.72/rad -->
-      <cda>0.19</cda>
-	<!-- start: same as tailsitter -->
-      <cma>-1.8</cma>
-      <alpha_stall>0.6391428111</alpha_stall>
-      <cla_stall>-3.85</cla_stall>
-      <cda_stall>-0.9233984055</cda_stall>
-      <cma_stall>0</cma_stall>
-	<!-- end: same as tailsitter -->
+	  <cla>3.295</cla>
+      <cda>0.166</cda>
+      <cma>0.281</cma>
+      <alpha_stall>0.305</alpha_stall>
+      <cla_stall>-0.802</cla_stall>
+      <cda_stall>-0.808</cda_stall>
+      <cma_stall>-0.229</cma_stall>
 	  <cp>0 -0.35 0</cp>
 	  <area>0.014</area>
       <air_density>1.2041</air_density>
@@ -515,22 +513,20 @@
     </plugin>
 
 	<!-- KiteX model: Main wing - Right -->
-	<!-- profile: ??
+    <!-- profile: Selig 8037
 	   cord:    100 mm
 	   span:    1400/2=700 mm
 	   thickness 20 mm -->
     <plugin name="right_wing" filename="libLiftDragPlugin.so">
       <robotNamespace></robotNamespace>
 	  <a0>0.087</a0><!-- 5 deg incidence -->
-	  <cla>5.72</cla><!--  1.5/15 deg -> 5.72/rad -->
-      <cda>0.19</cda>
-	<!-- start: same as tailsitter -->
-      <cma>-1.8</cma>
-      <alpha_stall>0.6391428111</alpha_stall>
-      <cla_stall>-3.85</cla_stall>
-      <cda_stall>-0.9233984055</cda_stall>
-      <cma_stall>0</cma_stall>
-	<!-- end: same as tailsitter -->
+	  <cla>3.295</cla>
+      <cda>0.166</cda>
+      <cma>0.281</cma>
+      <alpha_stall>0.305</alpha_stall>
+      <cla_stall>-0.802</cla_stall>
+      <cda_stall>-0.808</cda_stall>
+      <cma_stall>-0.229</cma_stall>
       <cp>0 0.35 0</cp>
 	  <area>0.014</area>
       <air_density>1.2041</air_density>
@@ -549,15 +545,13 @@
 		<robotNamespace></robotNamespace>
 	<!-- http://airfoiltools.com/polar/details?polar=xf-n0012-il-500000 -->
       <a0>0</a0>
-	  <cla>5.71</cla><!--  2/20 deg -> 5.71/rad -->
-	  <cda>0</cda> <!-- Cl = 0 at 0 alpha, thus cannot base on cl/cd at zero alpha -->
-	<!-- start: same as tailsitter -->
-	  <cma>-1.8</cma>
-	  <alpha_stall>0.7391428111</alpha_stall>
-	  <cla_stall>-3.85</cla_stall>
-	  <cda_stall>-0.9233984055</cda_stall>
-	  <cma_stall>0</cma_stall>
-	<!-- end: same as tailsitter -->
+	  <cla>4.475</cla>
+	  <cda>0.384</cda>
+	  <cma>0.069</cma>
+	  <alpha_stall>0.218</alpha_stall>
+	  <cla_stall>-7.529</cla_stall>
+	  <cda_stall>2.503</cda_stall>
+	  <cma_stall>1.851</cma_stall>
 	  <cp>0 0 0.63</cp>
 	  <area>0.006</area>
 	<!-- start: same as tailsitter -->
@@ -582,15 +576,13 @@
 	  <robotNamespace></robotNamespace>
 	<!-- http://airfoiltools.com/polar/details?polar=xf-n0012-il-500000 -->
       <a0>0</a0>
-	  <cla>5.71</cla><!--  2/20 deg -> 5.71/rad -->
-	  <cda>0</cda> <!-- Cl = 0 at 0 alpha, thus cannot base on cl/cd at zero alpha -->
-	<!-- start: same as tailsitter -->
-	  <cma>-1.8</cma>
-	  <alpha_stall>0.3391428111</alpha_stall>
-	  <cla_stall>-3.85</cla_stall>
-	  <cda_stall>-0.9233984055</cda_stall>
-	  <cma_stall>0</cma_stall>
-	<!-- end: same as tailsitter -->
+	  <cla>4.475</cla>
+	  <cda>0.384</cda>
+	  <cma>0.069</cma>
+	  <alpha_stall>0.218</alpha_stall>
+	  <cla_stall>-7.529</cla_stall>
+	  <cda_stall>2.503</cda_stall>
+	  <cma_stall>1.851</cma_stall>
 	  <cp>0 0 0.7</cp>
 	  <area>0.006</area>
 	  <air_density>1.2041</air_density>
@@ -600,7 +592,7 @@
 	</plugin>
 	
 	<!-- KiteX model: Vertical wing Left -->
-    <!-- profile: ??
+    <!-- profile: Selig 8037
 	   cord:    100 mm
 	   span:    800 mm
 	   thickness 20 mm -->
@@ -608,15 +600,13 @@
 		<robotNamespace></robotNamespace>
 	<!-- http://airfoiltools.com/polar/details?polar=xf-s8037-il-200000 -->
 	<a0>0.14</a0> <!-- 8 deg positive -->
-	  <cla>5.72</cla><!--  1.5/15 deg -> 5.72/rad -->
-      <cda>0.19</cda>
-	<!-- start: same as tailsitter -->
-	  <cma>-1.8</cma>
-	  <alpha_stall>0.7391428111</alpha_stall>
-	  <cla_stall>-3.85</cla_stall>
-	  <cda_stall>-0.9233984055</cda_stall>
-	  <cma_stall>0</cma_stall>
-	<!-- end: same as tailsitter -->
+	  <cla>3.295</cla>
+      <cda>0.166</cda>
+      <cma>0.281</cma>
+      <alpha_stall>0.305</alpha_stall>
+      <cla_stall>-0.802</cla_stall>
+      <cda_stall>-0.808</cda_stall>
+      <cma_stall>-0.229</cma_stall>
 	  <cp>0 -0.2 0</cp>
 	  <area>0.016</area> <!-- ?*0.014*0.6 = ? -->
 	<!-- start: same as tailsitter -->
@@ -628,7 +618,7 @@
 	</plugin>
 	
 	<!-- KiteX model: Vertical wing  Right -->
-    <!-- profile: ??
+    <!-- profile: Selig 8038
 	   cord:    100 mm
 	   span:    800 mm
 	   thickness 20 mm -->
@@ -636,15 +626,13 @@
 	  <robotNamespace></robotNamespace>
 	<!-- http://airfoiltools.com/polar/details?polar=xf-s8037-il-200000 -->
 	<a0>0.14</a0> <!-- 8 deg positive -->
-	  <cla>5.72</cla><!--  1.5/15 deg -> 5.72/rad -->
-      <cda>0.19</cda>
-	<!-- start: same as tailsitter -->
-	  <cma>-1.8</cma>
-	  <alpha_stall>0.7391428111</alpha_stall>
-	  <cla_stall>-3.85</cla_stall>
-	  <cda_stall>-0.9233984055</cda_stall>
-	  <cma_stall>0</cma_stall>
-	<!-- end: same as tailsitter -->
+	  <cla>3.295</cla>
+      <cda>0.166</cda>
+      <cma>0.281</cma>
+      <alpha_stall>0.305</alpha_stall>
+      <cla_stall>-0.802</cla_stall>
+      <cda_stall>-0.808</cda_stall>
+      <cma_stall>-0.229</cma_stall>
 	  <cp>0 0.2 0</cp>
 	  <area>0.016</area> <!-- ?*0.014*0.6 = ? -->
 	<!-- start: same as tailsitter -->
