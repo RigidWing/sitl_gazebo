@@ -1,21 +1,21 @@
 <?xml version='1.0'?>
 <sdf version='1.6'>
 	<model name='rigid_wing'>
-		<!--<pose>0 0 0 0 -0 0</pose>-->
-		<link name='base_link'>
+		<!-- KitePower -->
+		<!--<link name='base_link'>
 		  <pose>0 0 0 0 -0 0</pose>
 		  <inertial>
-			<pose>0 0 -0.1 0 -0 0</pose>
-			<mass>17</mass>
-			<inertia>
-			  <ixx>1</ixx>
+			<pose>0 0 -0.0 0 -0 0</pose>
+			<mass>1.4</mass> <!- [kg] ->
+			<inertia> <!- [kg/m²]->
+			  <ixx>0.15</ixx>
 			  <ixy>0</ixy>
 			  <ixz>0</ixz>
-			  <iyy>1</iyy>
+			  <iyy>0.05</iyy>
 			  <iyz>0</iyz>
-			  <izz>1</izz>
+			  <izz>17</izz>
 			</inertia>
-		  </inertial>
+		</inertial>
 		  <collision name='base_link_collision_wing'>
 			<pose>0 0 -0.1 0 -0 0</pose>
 			<geometry>
@@ -30,9 +30,6 @@
 				  <min_depth>0.01</min_depth>
 				</ode>
 			  </contact>
-			  <!--<friction>
-				<ode/>
-			  </friction>-->
 			</surface>
 		  </collision>
 		  <collision name='base_link_collision_mounts'>
@@ -69,7 +66,120 @@
 		  <gravity>1</gravity>
 		  <velocity_decay/>
 		  <self_collide>0</self_collide>
-		</link>
+	  </link>-->
+
+	<!-- KiteX -->
+	<link name='base_link'>
+		  <pose>0 0 0 0 -0 0</pose>
+		  <inertial>
+			<pose>0 0 -0.0 0 -0 0</pose>
+			<mass>1.4</mass> <!-- [kg] -->
+			<inertia> <!-- [kg/m²]-->
+			  <ixx>0.15</ixx>
+			  <ixy>0</ixy>
+			  <ixz>0</ixz>
+			  <iyy>0.05</iyy>
+			  <iyz>0</iyz>
+			  <izz>0.15</izz>
+			</inertia>
+		</inertial>
+		<!-- TODO -->
+		  <collision name='base_link_collision_wing'>
+			<pose>0 0 -0.1 0 -0 0</pose>
+			<geometry>
+			  <box>
+				<size>0.05 1 0.25</size>
+			  </box>
+			</geometry>
+			<surface>
+			  <contact>
+				<ode>
+				  <max_vel>10</max_vel>
+				  <min_depth>0.01</min_depth>
+				</ode>
+			  </contact>
+			</surface>
+		  </collision>
+		  <collision name='base_link_collision_mounts'>
+			<pose>0 0 0 0 -0 0</pose>
+			<geometry>
+			  <box>
+				<size>0.7 1.0 0.2</size>
+			  </box>
+			</geometry>
+			<surface>
+			  <contact>
+				<ode>
+				  <max_vel>10</max_vel>
+				  <min_depth>0.01</min_depth>
+				</ode>
+			  </contact>
+			</surface>
+		</collision>
+		<visual name='base_link_wing_visual'>
+			<pose>0 0.5 0 1.57 1.57 0</pose>
+			<geometry>
+			  <mesh>
+				<scale>0.004 0.004 0.004</scale>
+				<uri>model://rigid_wing/meshes/rudder.dae</uri>
+			  </mesh>
+			</geometry>
+			<material>
+			  <script>
+				<name>Gazebo/White</name>
+				<uri>__default__</uri>
+			  </script>
+			</material>
+		</visual>
+		<visual name='base_link_core_visual'>
+			<pose>0 0 -0.35 0 0 0</pose>
+			<geometry>
+			  <cylinder>
+				<radius>0.01</radius>
+				<length>0.7</length>
+			  </cylinder>
+			</geometry>
+			<material>
+			  <script>
+				<name>Gazebo/White</name>
+				<uri>__default__</uri>
+			  </script>
+			</material>
+		</visual>
+	  <visual name='V-wing-left_visual'>
+		<pose>-0.2 -0.2 0 1.57 1.57 1.57</pose>
+		<geometry>
+		  <mesh>
+			<scale>0.004 0.002 0.002</scale>
+			<uri>model://rigid_wing/meshes/rudder.dae</uri>
+		  </mesh>
+		</geometry>
+		<material>
+		  <script>
+			<name>Gazebo/Blue</name>
+			<uri>__default__</uri>
+		  </script>
+		</material>
+	  </visual>
+	  <visual name='V-wing-right_visual'>
+		<pose>-0.2 0.2 0 1.57 1.57 1.57</pose>
+		<geometry>
+		  <mesh>
+			<scale>0.004 0.002 0.002</scale>
+			<uri>model://rigid_wing/meshes/rudder.dae</uri>
+		  </mesh>
+		</geometry>
+		<material>
+		  <script>
+			<name>Gazebo/Blue</name>
+			<uri>__default__</uri>
+		  </script>
+		</material>
+	  </visual>
+		<gravity>1</gravity>
+		<velocity_decay/>
+		<self_collide>0</self_collide>
+	</link>
 
 	<link name='tether'>
 	  <pose>0 0 -0.2 0 0 0</pose>
@@ -144,7 +254,10 @@
 	</joint>
 
 	<link name='rotor_0'>
-		<pose>0.35 -0.43 0.35 0 -0 0</pose>
+	<!-- KitePower -->
+	<!--<pose>0.35 -0.43 0.35 0 -0 0</pose>->
+	<!-- KiteX -->
+		<pose>0.30 -0.2 0.05 0 -0 0</pose>
       <inertial>
 		<pose>0 0 0 0 0 0</pose>
 		<mass>0.005</mass>
@@ -162,7 +275,7 @@
 		<geometry>
 		  <cylinder>
 			<length>0.01</length>
-			<radius>0.2</radius>
+			<radius>0.1</radius>
 		  </cylinder>
 		</geometry>
 		<surface>
@@ -178,7 +291,8 @@
 		<pose>0 0 0 0 -0 0</pose>
 		<geometry>
 		  <mesh>
-			<scale>2 2 2</scale>
+			  <!-- KitePower : <scale>2 2 2</scale> -->
+			<scale>0.5 0.5 0.5</scale>
 			<uri>model://standard_vtol/meshes/iris_prop_ccw.dae</uri>
 		  </mesh>
 		</geometry>
@@ -211,7 +325,10 @@
     </joint>
 
     <link name='rotor_1'>
-		<pose>-0.35 0.43 0.35 0 -0 0</pose>
+	<!-- KitePower -->
+	<!--<pose>-0.35 0.43 0.35 0 -0 0</pose>-->
+	<!-- KiteX -->
+		<pose>-0.20 0.20 0.05 0 -0 0</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -229,7 +346,7 @@
         <geometry>
           <cylinder>
 			<length>0.01</length>
-			<radius>0.2</radius>
+			<radius>0.1</radius>
           </cylinder>
         </geometry>
         <surface>
@@ -245,7 +362,8 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-			<scale>2 2 2</scale>
+			  <!-- KitePower : <scale>2 2 2</scale> -->
+			<scale>0.5 0.5 0.5</scale>
 			<uri>model://standard_vtol/meshes/iris_prop_ccw.dae</uri>
           </mesh>
         </geometry>
@@ -278,7 +396,10 @@
     </joint>
 
     <link name='rotor_2'>
-	  <pose>0.35 0.43 0.35 0 -0 0</pose>
+	<!-- KitePower -->
+	<!--<pose>0.35 0.43 0.35 0 -0 0</pose>-->
+	<!-- KiteX -->
+	  <pose>0.30 0.2 0.05 0 -0 0</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -296,7 +417,7 @@
         <geometry>
           <cylinder>
 			<length>0.01</length>
-			<radius>0.2</radius>
+			<radius>0.1</radius>
           </cylinder>
         </geometry>
         <surface>
@@ -312,7 +433,8 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-			<scale>2 2 2</scale>
+			  <!-- KitePower : <scale>2 2 2</scale> -->
+			<scale>0.5 0.5 0.5</scale>
 			<uri>model://standard_vtol/meshes/iris_prop_ccw.dae</uri>
           </mesh>
         </geometry>
@@ -346,7 +468,10 @@
 
 
     <link name='rotor_3'>
-	  <pose>-0.35 -0.43 0.35 0 -0 0</pose>
+	<!-- KitePower -->
+	<!--<pose>-0.35 -0.43 0.35 0 -0 0</pose>-->
+	<!-- KiteX -->
+	  <pose>-0.20 -0.2 0.05 0 -0 0</pose>
       <inertial>
 		<pose>0 0 0 0 0 0</pose>
         <mass>0.005</mass>
@@ -364,7 +489,7 @@
         <geometry>
           <cylinder>
 			<length>0.01</length>
-			<radius>0.2</radius>
+			<radius>0.1</radius>
           </cylinder>
         </geometry>
         <surface>
@@ -380,7 +505,8 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-			<scale>2 2 2</scale>
+			  <!-- KitePower : <scale>2 2 2</scale> -->
+			<scale>0.5 0.5 0.5</scale>
 			<uri>model://standard_vtol/meshes/iris_prop_ccw.dae</uri>
           </mesh>
         </geometry>
@@ -412,8 +538,61 @@
       </axis>
     </joint>
 
-	<link name="rudder">
+	<!-- KitePower -->
+	<!--<link name="rudder">
 		<pose>0.05 -0.004 -1.29 0 1.57 0</pose>
+      <inertial>
+        <mass>0.00000001</mass>
+        <inertia>
+          <ixx>0.000001</ixx>
+          <ixy>0.0</ixy>
+          <iyy>0.000001</iyy>
+          <ixz>0.0</ixz>
+          <iyz>0.0</iyz>
+          <izz>0.000001</izz>
+        </inertia>
+      </inertial>
+	  <visual name='rudder_visual'>
+		<pose>0 0 0 0 -0 0</pose>
+		<geometry>
+		  <mesh>
+			<scale>0.001 0.001 0.001</scale>
+			<uri>model://rigid_wing/meshes/rudder.dae</uri>
+		  </mesh>
+		</geometry>
+		<material>
+		  <script>
+			<name>Gazebo/Blue</name>
+			<uri>__default__</uri>
+		  </script>
+		</material>
+	  </visual>
+    </link>
+	<joint name='rudder_joint' type='revolute'>
+      <parent>base_link</parent>
+	  <child>rudder</child>
+	  <pose>0.005 0.005 0 0 -0 0</pose>
+      <axis>
+		<xyz>0 0 1</xyz>
+        <limit>
+          <!- -30/+30 deg. ->
+          <lower>-0.53</lower>
+          <upper>0.53</upper>
+        </limit>
+        <dynamics>
+          <damping>1.000</damping>
+        </dynamics>
+      </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+        </ode>
+      </physics>
+  </joint>-->
+
+    <!-- KiteX -->
+	<link name="rudder">
+		<pose>-0.12 -0.005 -0.7 0 1.57 0</pose>
       <inertial>
         <mass>0.00000001</mass>
         <inertia>
@@ -461,10 +640,10 @@
           <implicit_spring_damper>1</implicit_spring_damper>
         </ode>
       </physics>
-    </joint>
+  </joint>
 
-
-	<link name="elevator">
+	<!-- KitePower -->
+	<!--<link name="elevator">
 	<pose>0.021 0 -1.322 1.57 1.57  0</pose>
 	  <inertial>
 		<mass>0.00000001</mass>
@@ -501,9 +680,68 @@
       <axis>
         <xyz>0 0 1</xyz>
         <limit>
+          <!- -30/+30 deg. ->
+		  <!-<lower>-0.53</lower>
+		  <upper>0.53</upper>->
+          <!- KiteX -40/+40 deg. ->
+          <lower>-0.6981</lower>
+          <upper>0.6981</upper>
+        </limit>
+        <dynamics>
+          <damping>1.000</damping>
+        </dynamics>
+      </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+        </ode>
+      </physics>
+  </joint>-->
+	
+	<!-- KiteX -->
+	<link name="elevator">
+	<pose>0 0 -.63 1.57 1.57  0</pose>
+	  <inertial>
+		<mass>0.00000001</mass>
+		<inertia>
+		  <ixx>0.000001</ixx>
+		  <ixy>0.0</ixy>
+		  <iyy>0.000001</iyy>
+		  <ixz>0.0</ixz>
+		  <iyz>0.0</iyz>
+		  <izz>0.000001</izz>
+		</inertia>
+		<pose>0 0 0 0 -0 0</pose>
+	  </inertial>
+	  <visual name='elevator_visual'>
+		<pose>0 0 0 0 -0 0</pose>
+		<geometry>
+		  <mesh>
+			<scale>0.001 0.001 0.0005</scale>
+			<uri>model://rigid_wing/meshes/elevator.dae</uri>
+		  </mesh>
+		</geometry>
+		<material>
+		  <script>
+			<name>Gazebo/Blue</name>
+			<uri>__default__</uri>
+		  </script>
+		</material>
+	  </visual>
+	</link>
+	<joint name='elevator_joint' type='revolute'>
+      <parent>base_link</parent>
+	  <child>elevator</child>
+	  <pose> -0.005 0 0 0 -0 0</pose>
+      <axis>
+        <xyz>0 0 -1</xyz>
+        <limit>
           <!-- -30/+30 deg. -->
-          <lower>-0.53</lower>
-          <upper>0.53</upper>
+		  <!--<lower>-0.53</lower>
+		  <upper>0.53</upper>-->
+          <!-- KiteX -40/+40 deg. -->
+          <lower>-0.6981</lower>
+          <upper>0.6981</upper>
         </limit>
         <dynamics>
           <damping>1.000</damping>
@@ -516,6 +754,52 @@
       </physics>
     </joint>
 
+	<!-- KitePower model: Main wing - Left -->
+	<!--	<plugin name="left_wing" filename="libLiftDragPlugin.so">
+	<robotNamespace></robotNamespace>
+	<!- start: same as tailsitter ->
+      <a0>0.05984281113</a0>
+      <cla>4.752798721</cla>
+      <cda>0.6417112299</cda>
+      <cma>-1.8</cma>
+      <alpha_stall>0.6391428111</alpha_stall>
+      <cla_stall>-3.85</cla_stall>
+      <cda_stall>-0.9233984055</cda_stall>
+      <cma_stall>0</cma_stall>
+	<!- end: same as tailsitter ->
+	  <cp>0.15 -0.4 0.0</cp>
+	  <area>0.5</area>
+      <air_density>1.2041</air_density>
+      <forward>0 0 1</forward>
+	  <upward>1 0 0</upward>
+      <link_name>base_link</link_name>
+	</plugin>-->
+
+	<!-- KitePower model: Main wing - Right -->
+	<!--<plugin name="right_wing" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
+	<!- start: same as tailsitter ->
+      <a0>0.05984281113</a0>
+      <cla>4.752798721</cla>
+      <cda>0.6417112299</cda>
+      <cma>-1.8</cma>
+      <alpha_stall>0.6391428111</alpha_stall>
+      <cla_stall>-3.85</cla_stall>
+      <cda_stall>-0.9233984055</cda_stall>
+      <cma_stall>0</cma_stall>
+	<!- end: same as tailsitter ->
+	<cp>0.15 0.4 0.0</cp>
+	  <area>0.5</area>
+      <air_density>1.2041</air_density>
+      <forward>0 0 1</forward>
+	  <upward>1 0 0</upward>
+      <link_name>base_link</link_name>
+  </plugin>-->
+
+    <!-- KiteX model: Main wing - Left -->
+    <!-- profile: ??
+	   cord:    140 mm
+	   span:    1400/2=700 mm-->
 	<plugin name="left_wing" filename="libLiftDragPlugin.so">
 	<robotNamespace></robotNamespace>
 	<!-- start: same as tailsitter -->
@@ -528,14 +812,18 @@
       <cda_stall>-0.9233984055</cda_stall>
       <cma_stall>0</cma_stall>
 	<!-- end: same as tailsitter -->
-	  <cp>0.15 -0.4 0.0</cp>
-	  <area>0.5</area>
+	  <cp>0 -0.7 0</cp>
+	  <area>0.1</area>
       <air_density>1.2041</air_density>
       <forward>0 0 1</forward>
 	  <upward>1 0 0</upward>
       <link_name>base_link</link_name>
     </plugin>
 
+	<!-- KiteX model: Main wing - Right -->
+	<!-- profile: ??
+	   cord:    140 mm
+	   span:    1400/2=700 mm-->
     <plugin name="right_wing" filename="libLiftDragPlugin.so">
       <robotNamespace></robotNamespace>
 	<!-- start: same as tailsitter -->
@@ -548,8 +836,8 @@
       <cda_stall>-0.9233984055</cda_stall>
       <cma_stall>0</cma_stall>
 	<!-- end: same as tailsitter -->
-	<cp>0.15 0.4 0.0</cp>
-	  <area>0.5</area>
+      <cp>0 0.7 0</cp>
+	  <area>0.1</area>
       <air_density>1.2041</air_density>
       <forward>0 0 1</forward>
 	  <upward>1 0 0</upward>
@@ -557,9 +845,42 @@
     </plugin>
 	
 
+	<!-- KitePower model: Elevator -->
+	<!--
 	<plugin name="elevator" filename="libLiftDragPlugin.so">
 	  <robotNamespace></robotNamespace>
 	  <a0>-0.2</a0>
+	<!- start: same as tailsitter ->
+	  <cla>4.752798721</cla>
+	  <cda>0.6417112299</cda>
+	  <cma>-1.8</cma>
+	  <alpha_stall>0.7391428111</alpha_stall>
+	  <cla_stall>-3.85</cla_stall>
+	  <cda_stall>-0.9233984055</cda_stall>
+	  <cma_stall>0</cma_stall>
+	<!- end: same as tailsitter ->
+	  <cp>0 0 0</cp>
+	  <area>0.03</area>
+	<!- start: same as tailsitter ->
+	  <air_density>1.2041</air_density>
+	  <forward>0 0 1</forward>
+	<!- end: same as tailsitter ->
+	  <upward>1 0 0</upward>
+	  <link_name>base_link</link_name>
+	<!- start: same as tailsitter ->
+	  <control_joint_name>
+		elevator_joint
+	  </control_joint_name>
+	<!- end: same as tailsitter ->
+</plugin>-->
+
+	<!-- KiteX model: Elevator -->
+    <!-- profile: NACA 0012
+	   cord:    60 mm
+	   span:    600 mm-->
+	<plugin name="elevator" filename="libLiftDragPlugin.so">
+	  <robotNamespace></robotNamespace>
+	  <a0>0</a0>
 	<!-- start: same as tailsitter -->
 	  <cla>4.752798721</cla>
 	  <cda>0.6417112299</cda>
@@ -569,8 +890,8 @@
 	  <cda_stall>-0.9233984055</cda_stall>
 	  <cma_stall>0</cma_stall>
 	<!-- end: same as tailsitter -->
-	  <cp>0 0 0</cp>
-	  <area>0.03</area>
+	  <cp>0 0 0.63</cp>
+	  <area>0.00432</area> <!-- 0.12*0.06*0.6 = 0.00432-->
 	<!-- start: same as tailsitter -->
 	  <air_density>1.2041</air_density>
 	  <forward>0 0 1</forward>
@@ -584,6 +905,33 @@
 	<!-- end: same as tailsitter -->
 	</plugin>
 
+	<!-- KitePower model: Rudder -->
+	<!--<plugin name="rudder" filename="libLiftDragPlugin.so">
+	  <robotNamespace></robotNamespace>
+	<!- start: same as tailsitter ->
+	  <a0>0.0</a0>
+	  <cla>4.752798721</cla>
+	  <cda>0.6417112299</cda>
+	  <cma>-1.8</cma>
+	  <alpha_stall>0.3391428111</alpha_stall>
+	  <cla_stall>-3.85</cla_stall>
+	  <cda_stall>-0.9233984055</cda_stall>
+	  <cma_stall>0</cma_stall>
+	<!- end: same as tailsitter ->
+	  <cp>0 0 0</cp>
+	<!- start: same as tailsitter ->
+	  <area>0.05</area>
+	  <air_density>1.2041</air_density>
+	<!- end: same as tailsitter ->
+	  <forward>0 0 1</forward>
+	  <upward>0 1 0</upward>
+	  <link_name>base_link</link_name>
+  </plugin>-->
+	
+  <!-- KiteX model: Rudder -->
+  <!-- profile: NACA 0012
+	   cord:    60 mm
+	   span:    600 mm-->
 	<plugin name="rudder" filename="libLiftDragPlugin.so">
 	  <robotNamespace></robotNamespace>
 	<!-- start: same as tailsitter -->
@@ -596,17 +944,68 @@
 	  <cda_stall>-0.9233984055</cda_stall>
 	  <cma_stall>0</cma_stall>
 	<!-- end: same as tailsitter -->
-	  <cp>0 0 0</cp>
-	<!-- start: same as tailsitter -->
-	  <area>0.05</area>
+	  <cp>0 0 0.7</cp>
+	  <area>0.00432</area> <!-- 0.12*0.06*0.6 = 0.00432-->
 	  <air_density>1.2041</air_density>
-	<!-- end: same as tailsitter -->
 	  <forward>0 0 1</forward>
 	  <upward>0 1 0</upward>
 	  <link_name>base_link</link_name>
 	</plugin>
+	
+	<!-- KiteX model: Vertical wing Left -->
+    <!-- profile: ??
+	   cord:    140 mm
+	   span:    600 mm-->
+	<plugin name="V-wing-left" filename="libLiftDragPlugin.so">
+	  <robotNamespace></robotNamespace>
+	  <a0>0</a0>
+	<!-- start: same as tailsitter -->
+	  <cla>4.752798721</cla>
+	  <cda>0.6417112299</cda>
+	  <cma>-1.8</cma>
+	  <alpha_stall>0.7391428111</alpha_stall>
+	  <cla_stall>-3.85</cla_stall>
+	  <cda_stall>-0.9233984055</cda_stall>
+	  <cma_stall>0</cma_stall>
+	<!-- end: same as tailsitter -->
+	  <cp>0 -0.2 0</cp>
+	  <area>0</area> <!-- ?*0.014*0.6 = ? -->
+	<!-- start: same as tailsitter -->
+	  <air_density>1.2041</air_density>
+	  <forward>0 0 1</forward>
+	<!-- end: same as tailsitter -->
+	  <upward>1 0 0</upward>
+	  <link_name>base_link</link_name>
+	</plugin>
+	
+	<!-- KiteX model: Vertical wing  Right -->
+    <!-- profile: ??
+	   cord:    140 mm
+	   span:    600 mm-->
+	<plugin name="V-wing-right" filename="libLiftDragPlugin.so">
+	  <robotNamespace></robotNamespace>
+	  <a0>0</a0>
+	<!-- start: same as tailsitter -->
+	  <cla>4.752798721</cla>
+	  <cda>0.6417112299</cda>
+	  <cma>-1.8</cma>
+	  <alpha_stall>0.7391428111</alpha_stall>
+	  <cla_stall>-3.85</cla_stall>
+	  <cda_stall>-0.9233984055</cda_stall>
+	  <cma_stall>0</cma_stall>
+	<!-- end: same as tailsitter -->
+	  <cp>0 0.2 0</cp>
+	  <area>0</area> <!-- ?*0.014*0.6 = ? -->
+	<!-- start: same as tailsitter -->
+	  <air_density>1.2041</air_density>
+	  <forward>0 0 1</forward>
+	<!-- end: same as tailsitter -->
+	  <upward>1 0 0</upward>
+	  <link_name>base_link</link_name>
+	</plugin>
 
-	<plugin name='m0_motor_model' filename='librotors_gazebo_motor_model.so'>
+	<!-- KitePower Motors -->
+	<!--<plugin name='m0_motor_model' filename='librotors_gazebo_motor_model.so'>
 	  <robotNamespace></robotNamespace>
 	  <jointName>rotor_0_joint</jointName>
 	  <linkName>rotor_0</linkName>
@@ -631,6 +1030,7 @@
 	  <turningDirection>ccw</turningDirection>
 	  <timeConstantUp>0.0125</timeConstantUp>
 	  <timeConstantDown>0.025</timeConstantDown>
+	  <maxRotVelocity>728</maxRotVelocity>
 	  <maxRotVelocity>728</maxRotVelocity>
 	  <motorConstant>0.000194</motorConstant>
 	  <momentConstant>0.06</momentConstant>
@@ -669,6 +1069,79 @@
 	  <timeConstantDown>0.025</timeConstantDown>
 	  <maxRotVelocity>728</maxRotVelocity>
 	  <motorConstant>0.000194</motorConstant>
+	  <momentConstant>0.06</momentConstant>
+	  <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
+	  <motorNumber>3</motorNumber>
+	  <rotorDragCoefficient>8.06428e-5</rotorDragCoefficient>
+	  <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+	  <motorSpeedPubTopic>/motor_speed/3</motorSpeedPubTopic>
+	  <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+	</plugin>-->
+
+	<!-- KiteX Motors -->
+	<plugin name='m0_motor_model' filename='librotors_gazebo_motor_model.so'>
+	  <robotNamespace></robotNamespace>
+	  <jointName>rotor_0_joint</jointName>
+	  <linkName>rotor_0</linkName>
+	  <turningDirection>ccw</turningDirection>
+	  <timeConstantUp>0.0125</timeConstantUp>
+	  <timeConstantDown>0.025</timeConstantDown>
+	  <maxRotVelocity>576</maxRotVelocity> <!-- rad/s -->
+	  <motorConstant>0.00001824</motorConstant><!-- N/(rad/s)² -->
+	  <momentConstant>0.06</momentConstant>
+	  <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
+	  <motorNumber>0</motorNumber>
+	  <rotorDragCoefficient>8.06428e-5</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <motorSpeedPubTopic>/motor_speed/0</motorSpeedPubTopic>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+    </plugin>
+
+	<plugin name='m1_motor_model' filename='librotors_gazebo_motor_model.so'>
+	  <robotNamespace></robotNamespace>
+	  <jointName>rotor_1_joint</jointName>
+	  <linkName>rotor_1</linkName>
+	  <turningDirection>ccw</turningDirection>
+	  <timeConstantUp>0.0125</timeConstantUp>
+	  <timeConstantDown>0.025</timeConstantDown>
+	  <maxRotVelocity>576</maxRotVelocity> <!-- rad/s -->
+	  <motorConstant>0.00001824</motorConstant><!-- N/(rad/s)² -->
+	  <momentConstant>0.06</momentConstant>
+	  <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
+	  <motorNumber>1</motorNumber>
+	  <rotorDragCoefficient>8.06428e-5</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <motorSpeedPubTopic>/motor_speed/1</motorSpeedPubTopic>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+    </plugin>
+
+	<plugin name='m2_motor_model' filename='librotors_gazebo_motor_model.so'>
+	  <robotNamespace></robotNamespace>
+	  <jointName>rotor_2_joint</jointName>
+	  <linkName>rotor_2</linkName>
+	  <turningDirection>cw</turningDirection>
+	  <timeConstantUp>0.0125</timeConstantUp>
+	  <timeConstantDown>0.025</timeConstantDown>
+	  <maxRotVelocity>576</maxRotVelocity> <!-- rad/s -->
+	  <motorConstant>0.00001824</motorConstant><!-- N/(rad/s)² -->
+	  <momentConstant>0.06</momentConstant>
+	  <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
+	  <motorNumber>2</motorNumber>
+	  <rotorDragCoefficient>8.06428e-5</rotorDragCoefficient>
+	  <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+	  <motorSpeedPubTopic>/motor_speed/2</motorSpeedPubTopic>
+	  <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+	</plugin>
+
+	<plugin name='m3_motor_model' filename='librotors_gazebo_motor_model.so'>
+	  <robotNamespace></robotNamespace>
+	  <jointName>rotor_3_joint</jointName>
+	  <linkName>rotor_3</linkName>
+	  <turningDirection>cw</turningDirection>
+	  <timeConstantUp>0.0125</timeConstantUp>
+	  <timeConstantDown>0.025</timeConstantDown>
+	  <maxRotVelocity>576</maxRotVelocity> <!--  rad/s -->
+	  <motorConstant>0.00001824</motorConstant><!-- N/(rad/s)² -->
 	  <momentConstant>0.06</momentConstant>
 	  <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
 	  <motorNumber>3</motorNumber>
@@ -750,7 +1223,7 @@
 		  <input_offset>0</input_offset>
 		  <input_scaling>1</input_scaling>
 		  <zero_position_disarmed>0</zero_position_disarmed>
-		  <zero_position_armed>0</zero_position_armed>
+		  <zero_position_armed>-0.525</zero_position_armed>
 		  <joint_control_type>position_kinematic</joint_control_type>
 		  <joint_name>rudder_joint</joint_name>
 		</channel>
