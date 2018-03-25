@@ -1,0 +1,42 @@
+<sdf version='1.5'>
+  <model name='solo_with_tether'>
+    <include>
+      <uri>model://solo</uri>
+    </include>
+    <include>
+      <uri>model://tether</uri>
+      <pose>-0.12 0 0 0 3.1415 0</pose>
+    </include>
+    <joint name="tether_joint" type="universal">
+      <child>solo::base_link</child>
+      <parent>tether::link_00</parent>
+      <axis>
+	<xyz>0 1 0</xyz>
+	<limit>
+	  <lower>-1.57</lower>
+	  <upper>1.57</upper>
+	</limit>
+	<dynamics>
+	  <damping>2.0</damping>
+	</dynamics>
+	<use_parent_model_frame>true</use_parent_model_frame>
+      </axis>
+      <axis2>
+	<xyz>0 0 1</xyz>
+	<limit>
+	  <lower>-1.57</lower>
+	  <upper>1.57</upper>
+	</limit>
+	<dynamics>
+	  <damping>2.0</damping>
+	</dynamics>
+	<use_parent_model_frame>true</use_parent_model_frame>
+      </axis2>
+      <physics>
+	<ode>
+	  <cfm_damping>1</cfm_damping>
+	</ode>
+      </physics>
+    </joint>
+  </model>
+</sdf>
