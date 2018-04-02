@@ -1311,7 +1311,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
@@ -1322,7 +1325,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis2>
@@ -1342,7 +1348,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
@@ -1353,7 +1362,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis2>
@@ -1373,7 +1385,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
@@ -1384,7 +1399,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis2>
@@ -1404,7 +1422,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
@@ -1415,7 +1436,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis2>
@@ -1435,7 +1459,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
@@ -1446,7 +1473,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis2>
@@ -1466,7 +1496,10 @@
           <upper>2.35</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
@@ -1477,7 +1510,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis2>
@@ -1497,7 +1533,10 @@
           <upper>3.00</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
@@ -1508,7 +1547,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis2>
@@ -1528,7 +1570,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
@@ -1539,7 +1584,10 @@
           <upper>2.35</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis2>
@@ -1559,7 +1607,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
@@ -1570,7 +1621,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis2>
@@ -1590,7 +1644,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
@@ -1601,7 +1658,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis2>
@@ -1621,7 +1681,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
@@ -1632,7 +1695,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis2>
@@ -1652,7 +1718,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
@@ -1663,7 +1732,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis2>
@@ -1683,7 +1755,10 @@
           <upper>0.72</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
@@ -1694,7 +1769,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis2>
@@ -1714,7 +1792,10 @@
           <upper>0.0</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
@@ -1725,7 +1806,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis2>
@@ -1745,7 +1829,10 @@
           <upper>0.72</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
@@ -1756,7 +1843,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis2>
@@ -1776,7 +1866,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
@@ -1787,7 +1880,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis2>
@@ -1807,7 +1903,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
@@ -1818,7 +1917,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis2>
@@ -1838,7 +1940,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
@@ -1849,7 +1954,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis2>
@@ -1869,7 +1977,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
@@ -1880,7 +1991,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>2.0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis2>
@@ -1900,7 +2014,10 @@
           <upper>1.57</upper>
         </limit>
         <dynamics>
-          <damping>0</damping>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
         </dynamics>
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
