@@ -30,9 +30,14 @@
 #include <gazebo/transport/transport.hh>
 #include <gazebo/util/system.hh>
 #include <gazebo/sensors/sensors.hh>
+#include <ignition/math.hh>
+
+#include "SensorImu.pb.h"
 
 namespace gazebo
 {
+  typedef const boost::shared_ptr<const sensor_msgs::msgs::Imu> ImuPtr;
+
   class GAZEBO_VISIBLE GimbalControllerPlugin : public ModelPlugin
   {
     /// \brief Constructor
@@ -43,6 +48,8 @@ namespace gazebo
     public: virtual void Init();
 
     private: void OnUpdate();
+
+    private: void ImuCallback(ImuPtr& imu_message);
 
 #if GAZEBO_MAJOR_VERSION >= 7 && GAZEBO_MINOR_VERSION >= 4
     /// only gazebo 7.4 and above support Any
@@ -74,6 +81,7 @@ namespace gazebo
 
     private: std::vector<event::ConnectionPtr> connections;
 
+    private: transport::SubscriberPtr imuSub;
     private: transport::SubscriberPtr pitchSub;
     private: transport::SubscriberPtr rollSub;
     private: transport::SubscriberPtr yawSub;
@@ -93,7 +101,8 @@ namespace gazebo
     /// \brief camera pitch joint
     private: physics::JointPtr pitchJoint;
 
-    private: sensors::ImuSensorPtr imuSensor;
+    private: sensors::ImuSensorPtr cameraImuSensor;
+    private: double lastImuYaw;
 
     private: std::string status;
 

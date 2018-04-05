@@ -23,6 +23,7 @@
 
 #include <Eigen/Dense>
 #include <gazebo/gazebo.hh>
+#include <ignition/math.hh>
 
 namespace gazebo {
 
@@ -52,7 +53,7 @@ bool getSdfParam(sdf::ElementPtr sdf, const std::string& name, T& param, const T
 /**
  * \brief Get a math::Angle as an angle from [0, 360)
  */
-double GetDegrees360(const math::Angle& angle) {
+double GetDegrees360(const ignition::math::Angle& angle) {
   double degrees = angle.Degree();
   while (degrees < 0.) degrees += 360.0;
   while (degrees >= 360.0) degrees -= 360.0;
@@ -137,5 +138,17 @@ void copyPosition(const In& in, Out* out) {
   out->y = in.y;
   out->z = in.z;
 }
+
+#if GAZEBO_MAJOR_VERSION < 9
+inline ignition::math::Vector3d ignitionFromGazeboMath(const gazebo::math::Vector3 &vec_gz) {
+  return ignition::math::Vector3d(vec_gz.x, vec_gz.y, vec_gz.z);
+}
+
+inline ignition::math::Pose3d ignitionFromGazeboMath(const gazebo::math::Pose &pose_gz) {
+
+  return ignition::math::Pose3d(pose_gz.pos.x, pose_gz.pos.y, pose_gz.pos.z,
+                                pose_gz.rot.w, pose_gz.rot.x, pose_gz.rot.y, pose_gz.rot.z);
+}
+#endif
 
 #endif  // SITL_GAZEBO_COMMON_H_

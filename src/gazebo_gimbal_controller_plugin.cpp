@@ -35,6 +35,7 @@ GimbalControllerPlugin::GimbalControllerPlugin()
   this->pitchCommand = 0.5* M_PI;
   this->rollCommand = 0;
   this->yawCommand = 0;
+  this->lastImuYaw = 0;
 }
 
 /////////////////////////////////////////////////
@@ -110,24 +111,24 @@ void GimbalControllerPlugin::Load(physics::ModelPtr _model,
   }
 
 
-  // get imu sensor
-  std::string imuSensorName = "camera_imu";
-  if (this->sdf->HasElement("imu"))
+  // get imu sensors
+  std::string cameraImuSensorName = "camera_imu";
+  if (this->sdf->HasElement("gimbal_imu"))
   {
     // Add names to map
-    imuSensorName = sdf->Get<std::string>("imu");
+    cameraImuSensorName = sdf->Get<std::string>("gimbal_imu");
   }
 #if GAZEBO_MAJOR_VERSION >= 7
-  this->imuSensor = std::static_pointer_cast<sensors::ImuSensor>(
-    sensors::SensorManager::Instance()->GetSensor(imuSensorName));
+  this->cameraImuSensor = std::static_pointer_cast<sensors::ImuSensor>(
+    sensors::SensorManager::Instance()->GetSensor(cameraImuSensorName));
 #elif GAZEBO_MAJOR_VERSION >= 6
-  this->imuSensor = boost::static_pointer_cast<sensors::ImuSensor>(
-    sensors::SensorManager::Instance()->GetSensor(imuSensorName));
+  this->cameraImuSensor = boost::static_pointer_cast<sensors::ImuSensor>(
+    sensors::SensorManager::Instance()->GetSensor(cameraImuSensorName));
 #endif
-  if (!this->imuSensor)
+  if (!this->cameraImuSensor)
   {
     gzerr << "GimbalControllerPlugin::Load ERROR! Can't get imu sensor '"
-          << imuSensorName << "' " << endl;
+          << cameraImuSensorName << "' " << endl;
   }
 }
 
@@ -135,9 +136,13 @@ void GimbalControllerPlugin::Load(physics::ModelPtr _model,
 void GimbalControllerPlugin::Init()
 {
   this->node = transport::NodePtr(new transport::Node());
+#if GAZEBO_MAJOR_VERSION >= 9
+  this->node->Init(this->model->GetWorld()->Name());
+  this->lastUpdateTime = this->model->GetWorld()->SimTime();
+#else
   this->node->Init(this->model->GetWorld()->GetName());
-
   this->lastUpdateTime = this->model->GetWorld()->GetSimTime();
+#endif
 
   // receive pitch command via gz transport
   std::string pitchTopic = std::string("~/") +  this->model->GetName() +
@@ -189,7 +194,17 @@ void GimbalControllerPlugin::Init()
   this->yawPub = node->Advertise<gazebo::msgs::GzString>(yawTopic);
 #endif
 
+  imuSub = node->Subscribe("~/" + model->GetName() + "/imu", &GimbalControllerPlugin::ImuCallback, this);
+
   gzmsg << "GimbalControllerPlugin::Init" << std::endl;
+}
+
+void GimbalControllerPlugin::ImuCallback(ImuPtr& imu_message)
+{
+  this->lastImuYaw = ignition::math::Quaterniond(imu_message->orientation().w(),
+						 imu_message->orientation().x(),
+						 imu_message->orientation().y(),
+						 imu_message->orientation().z()).Euler()[2];
 }
 
 #if GAZEBO_MAJOR_VERSION >= 7 && GAZEBO_MINOR_VERSION >= 4
@@ -269,7 +284,11 @@ void GimbalControllerPlugin::OnUpdate()
   if (!this->pitchJoint || !this->rollJoint || !this->yawJoint)
     return;
 
+#if GAZEBO_MAJOR_VERSION >= 9
+  common::Time time = this->model->GetWorld()->SimTime();
+#else
   common::Time time = this->model->GetWorld()->GetSimTime();
+#endif
   if (time < this->lastUpdateTime)
   {
     gzerr << "time reset event\n";
@@ -287,7 +306,21 @@ void GimbalControllerPlugin::OnUpdate()
     const double pDir = -1;
     const double yDir = 1;
 
+    // We want yaw to control in body frame, not in global.
+    this->yawCommand += this->lastImuYaw;
+
     // truncate command inside joint angle limits
+#if GAZEBO_MAJOR_VERSION >= 9
+    double rollLimited = ignition::math::clamp(this->rollCommand,
+      rDir*this->rollJoint->UpperLimit(0),
+	  rDir*this->rollJoint->LowerLimit(0));
+    double pitchLimited = ignition::math::clamp(this->pitchCommand,
+      pDir*this->pitchJoint->UpperLimit(0),
+      pDir*this->pitchJoint->LowerLimit(0));
+    double yawLimited = ignition::math::clamp(this->yawCommand,
+      yDir*this->yawJoint->LowerLimit(0),
+	  yDir*this->yawJoint->UpperLimit(0));
+#else
     double rollLimited = ignition::math::clamp(this->rollCommand,
       rDir*this->rollJoint->GetUpperLimit(0).Radian(),
 	  rDir*this->rollJoint->GetLowerLimit(0).Radian());
@@ -297,17 +330,13 @@ void GimbalControllerPlugin::OnUpdate()
     double yawLimited = ignition::math::clamp(this->yawCommand,
       yDir*this->yawJoint->GetLowerLimit(0).Radian(),
 	  yDir*this->yawJoint->GetUpperLimit(0).Radian());
-
-    ignition::math::Quaterniond commandRPY(
-      rollLimited, pitchLimited, yawLimited);
-
-
-    /// Get current joint angles (in sensor frame):
+#endif
 
     /// currentAngleYPRVariable is defined in roll-pitch-yaw-fixed-axis
     /// and gimbal is constructed using yaw-roll-pitch-variable-axis
     ignition::math::Vector3d currentAngleYPRVariable(
-      this->imuSensor->Orientation().Euler());
+      this->cameraImuSensor->Orientation().Euler());
+
 #if GAZEBO_MAJOR_VERSION >= 8
     ignition::math::Vector3d currentAnglePRYVariable(
       this->QtoZXY(ignition::math::Quaterniond(currentAngleYPRVariable)));
@@ -318,6 +347,16 @@ void GimbalControllerPlugin::OnUpdate()
 
     /// get joint limits (in sensor frame)
     /// TODO: move to Load() if limits do not change
+#if GAZEBO_MAJOR_VERSION >= 9
+    ignition::math::Vector3d lowerLimitsPRY
+      (pDir*this->pitchJoint->LowerLimit(0),
+       rDir*this->rollJoint->LowerLimit(0),
+       yDir*this->yawJoint->LowerLimit(0));
+    ignition::math::Vector3d upperLimitsPRY
+      (pDir*this->pitchJoint->UpperLimit(0),
+       rDir*this->rollJoint->UpperLimit(0),
+       yDir*this->yawJoint->UpperLimit(0));
+#else
     ignition::math::Vector3d lowerLimitsPRY
       (pDir*this->pitchJoint->GetLowerLimit(0).Radian(),
        rDir*this->rollJoint->GetLowerLimit(0).Radian(),
@@ -326,6 +365,7 @@ void GimbalControllerPlugin::OnUpdate()
       (pDir*this->pitchJoint->GetUpperLimit(0).Radian(),
        rDir*this->rollJoint->GetUpperLimit(0).Radian(),
        yDir*this->yawJoint->GetUpperLimit(0).Radian());
+#endif
 
     // normalize errors
     double pitchError = this->ShortestAngularDistance(
@@ -408,7 +448,19 @@ void GimbalControllerPlugin::OnUpdate()
   if (++i>100)
   {
     i = 0;
-#if GAZEBO_MAJOR_VERSION >= 7 && GAZEBO_MINOR_VERSION >= 4
+#if GAZEBO_MAJOR_VERSION >= 9
+    gazebo::msgs::Any m;
+    m.set_type(gazebo::msgs::Any_ValueType_DOUBLE);
+
+    m.set_double_value(this->pitchJoint->Position(0));
+    this->pitchPub->Publish(m);
+
+    m.set_double_value(this->rollJoint->Position(0));
+    this->rollPub->Publish(m);
+
+    m.set_double_value(this->yawJoint->Position(0));
+    this->yawPub->Publish(m);
+#elif GAZEBO_MAJOR_VERSION >= 7 && GAZEBO_MINOR_VERSION >= 4
     gazebo::msgs::Any m;
     m.set_type(gazebo::msgs::Any_ValueType_DOUBLE);
 

@@ -17,7 +17,7 @@
 #pragma once
 
 #include <string>
-
+#include <mavlink/v2.0/common/mavlink.h>
 #include <gazebo/common/Plugin.hh>
 #include <gazebo/sensors/CameraSensor.hh>
 #include <gazebo/gazebo.hh>
@@ -28,42 +28,81 @@
 #include <gazebo/msgs/msgs.hh>
 #include <gazebo/physics/physics.hh>
 #include <gazebo/rendering/rendering.hh>
+#include <SITLGps.pb.h>
+#include <ignition/math.hh>
 
 namespace gazebo
 {
+
+typedef const boost::shared_ptr<const gps_msgs::msgs::SITLGps> GpsPtr;
+
 /**
  * @class GeotaggedImagesPlugin
  * Gazebo plugin that saves geotagged camera images to disk.
  */
 class GAZEBO_VISIBLE GeotaggedImagesPlugin : public SensorPlugin
 {
-  public: GeotaggedImagesPlugin();
+public:
+    GeotaggedImagesPlugin();
 
-  public: virtual ~GeotaggedImagesPlugin();
+    virtual ~GeotaggedImagesPlugin();
+    virtual void Load(sensors::SensorPtr sensor, sdf::ElementPtr sdf);
 
-  public: virtual void Load(sensors::SensorPtr sensor, sdf::ElementPtr sdf);
+    void OnNewFrame(const unsigned char *image);
+    void OnNewGpsPosition(GpsPtr& gps_msg);
+    void cameraThread();
 
-  public: void OnNewFrame(const unsigned char *image);
-  public: void OnNewGpsPosition(ConstVector3dPtr& v);
+private:
+    void _handle_message(mavlink_message_t *msg, struct sockaddr* srcaddr);
+    void _send_mavlink_message(const mavlink_message_t *message, struct sockaddr* srcaddr = NULL);
+    void _handle_camera_info(const mavlink_message_t *pMsg, struct sockaddr* srcaddr);
+    void _handle_request_camera_capture_status(const mavlink_message_t *pMsg, struct sockaddr* srcaddr);
+    void _handle_storage_info(const mavlink_message_t *pMsg, struct sockaddr* srcaddr);
+    void _handle_take_photo(const mavlink_message_t *pMsg, struct sockaddr* srcaddr);
+    void _handle_stop_take_photo(const mavlink_message_t *pMsg, struct sockaddr* srcaddr);
+    void _handle_request_camera_settings(const mavlink_message_t *pMsg, struct sockaddr* srcaddr);
+    void _send_capture_status(struct sockaddr* srcaddr = NULL);
+    void _send_cmd_ack(uint8_t target_sysid, uint8_t target_compid, uint16_t cmd, unsigned char result, struct sockaddr* srcaddr);
+    void _send_heartbeat();
+    bool _init_udp(sdf::ElementPtr sdf);
 
-  protected: float storeIntervalSec_;
-  private: int imageCounter_;
-  common::Time lastImageTime_;
+private:
 
-  protected: sensors::CameraSensorPtr parentSensor_;
-  protected: rendering::CameraPtr camera_;
-  protected: rendering::ScenePtr scene_;
-  private: event::ConnectionPtr newFrameConnection_;
-  private: std::string storageDir_;
-  private: msgs::Vector3d lastGpsPosition_;
+    int         _imageCounter;
+    uint32_t    _width;
+    uint32_t    _height;
+    uint32_t    _depth;
+    uint32_t    _destWidth;     ///< output size
+    uint32_t    _destHeight;
+    int         _captureCount;
+    double      _captureInterval;
+    int         _fd;
 
-  private: transport::NodePtr node_handle_;
-  private: std::string namespace_;
-  private: transport::SubscriberPtr gpsSub_;
+    enum {
+        CAPTURE_DISABLED,
+        CAPTURE_SINGLE,
+        CAPTURE_ELAPSED
+    };
 
-  protected: unsigned int width_, height_, depth_;
-  protected: unsigned int destWidth_, destHeight_; ///< output size
-  protected: std::string format_;
+    int         _captureMode;
+
+    common::Time                _lastImageTime{};
+    common::Time                _last_time{};
+    common::Time                _last_heartbeat{};
+    sensors::CameraSensorPtr    _parentSensor;
+    rendering::CameraPtr        _camera;
+    rendering::ScenePtr         _scene;
+    event::ConnectionPtr        _newFrameConnection;
+    std::string                 _storageDir;
+    ignition::math::Vector3d    _lastGpsPosition;
+    transport::NodePtr          _node_handle;
+    std::string                 _namespace;
+    transport::SubscriberPtr    _gpsSub;
+    std::string                 _format;
+    struct sockaddr_in          _myaddr;    ///< The locally bound address
+    struct sockaddr_in          _gcsaddr;   ///< GCS target
+    struct pollfd               _fds[1];
+    std::mutex                  _captureMutex;
 };
 
 } /* namespace gazebo */
