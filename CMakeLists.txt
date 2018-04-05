@@ -286,6 +286,7 @@ add_library(gazebo_sonar_plugin SHARED src/gazebo_sonar_plugin.cpp)
 add_library(gazebo_uuv_plugin SHARED src/gazebo_uuv_plugin.cpp)
 add_library(gazebo_gps_plugin SHARED src/gazebo_gps_plugin.cpp)
 add_library(gazebo_vision_plugin SHARED src/gazebo_vision_plugin.cpp)
+# added (Jonas):
 add_library(TetherForcePlugin SHARED src/gazebo_tether_force_plugin.cpp)
 
 set(plugins
