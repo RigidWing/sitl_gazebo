@@ -202,7 +202,6 @@ void LiftDragPlugin::OnUpdate()
   ignition::math::Vector3d constantWind(this->vel_wind*cos(this->azimuth_wind),this->vel_wind*sin(this->azimuth_wind),0);
   vel += constantWind;
   // end   ---
-  math::Vector3 velI = vel;
   velI.Normalize();
 
   // smoothing

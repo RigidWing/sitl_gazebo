@@ -1965,6 +1965,7 @@
       <parent>world</parent>
     </joint>
     <plugin name="link00_drag" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
       <cda>1.2535816618911175</cda>
@@ -1978,6 +1979,7 @@
       <link_name>link_00</link_name>
     </plugin>
     <plugin name="link01_drag" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
       <cda>1.2535816618911175</cda>
@@ -1991,6 +1993,7 @@
       <link_name>link_01</link_name>
     </plugin>
     <plugin name="link02_drag" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
       <cda>1.2535816618911175</cda>
@@ -2004,6 +2007,7 @@
       <link_name>link_02</link_name>
     </plugin>
     <plugin name="link03_drag" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
       <cda>1.2535816618911175</cda>
@@ -2017,6 +2021,7 @@
       <link_name>link_03</link_name>
     </plugin>
     <plugin name="link04_drag" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
       <cda>1.2535816618911175</cda>
@@ -2030,6 +2035,7 @@
       <link_name>link_04</link_name>
     </plugin>
     <plugin name="link05_drag" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
       <cda>1.2535816618911175</cda>
@@ -2043,6 +2049,7 @@
       <link_name>link_05</link_name>
     </plugin>
     <plugin name="link06_drag" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
       <cda>1.2535816618911175</cda>
@@ -2056,6 +2063,7 @@
       <link_name>link_06</link_name>
     </plugin>
     <plugin name="link07_drag" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
       <cda>1.2535816618911175</cda>
@@ -2069,6 +2077,7 @@
       <link_name>link_07</link_name>
     </plugin>
     <plugin name="link08_drag" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
       <cda>1.2535816618911175</cda>
@@ -2082,6 +2091,7 @@
       <link_name>link_08</link_name>
     </plugin>
     <plugin name="link09_drag" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
       <cda>1.2535816618911175</cda>
@@ -2095,6 +2105,7 @@
       <link_name>link_09</link_name>
     </plugin>
     <plugin name="link10_drag" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
       <cda>1.2535816618911175</cda>
@@ -2108,6 +2119,7 @@
       <link_name>link_10</link_name>
     </plugin>
     <plugin name="link11_drag" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
       <cda>1.2535816618911175</cda>
@@ -2121,6 +2133,7 @@
       <link_name>link_11</link_name>
     </plugin>
     <plugin name="link12_drag" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
       <cda>1.2535816618911175</cda>
@@ -2134,6 +2147,7 @@
       <link_name>link_12</link_name>
     </plugin>
     <plugin name="link13_drag" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
       <cda>1.2535816618911175</cda>
@@ -2147,6 +2161,7 @@
       <link_name>link_13</link_name>
     </plugin>
     <plugin name="link14_drag" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
       <cda>1.2535816618911175</cda>
@@ -2160,6 +2175,7 @@
       <link_name>link_14</link_name>
     </plugin>
     <plugin name="link15_drag" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
       <cda>1.2535816618911175</cda>
@@ -2173,6 +2189,7 @@
       <link_name>link_15</link_name>
     </plugin>
     <plugin name="link16_drag" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
       <cda>1.2535816618911175</cda>
@@ -2186,6 +2203,7 @@
       <link_name>link_16</link_name>
     </plugin>
     <plugin name="link17_drag" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
       <cda>1.2535816618911175</cda>
@@ -2199,6 +2217,7 @@
       <link_name>link_17</link_name>
     </plugin>
     <plugin name="link18_drag" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
       <cda>1.2535816618911175</cda>
@@ -2212,6 +2231,7 @@
       <link_name>link_18</link_name>
     </plugin>
     <plugin name="link19_drag" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
       <cda>1.2535816618911175</cda>
