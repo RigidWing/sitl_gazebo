@@ -255,6 +255,8 @@ set (msgs
   msgs/SITLGps.proto
   msgs/Groundtruth.proto
   msgs/odom.proto
+  # KITEPOWER (Xander)
+  msgs/WindField.proto
 )
 PROTOBUF_GENERATE_CPP(PROTO_SRCS PROTO_HDRS ${msgs})
 add_library(mav_msgs SHARED ${PROTO_SRCS})
@@ -288,6 +290,8 @@ add_library(gazebo_gps_plugin SHARED src/gazebo_gps_plugin.cpp)
 add_library(gazebo_vision_plugin SHARED src/gazebo_vision_plugin.cpp)
 # added (Jonas):
 add_library(TetherForcePlugin SHARED src/gazebo_tether_force_plugin.cpp)
+# KITEPOWER (Xander)
+add_library(gazebo_wind_field_plugin SHARED src/gazebo_wind_field_plugin.cpp)
 
 set(plugins
   rotors_gazebo_controller_interface
@@ -304,6 +308,8 @@ set(plugins
   gazebo_gps_plugin
   gazebo_vision_plugin
   TetherForcePlugin
+  # KITEPOWER (Xander)
+  gazebo_wind_field_plugin
   )
 
 # ROS mavlink version not compatible with geotagged images plugin

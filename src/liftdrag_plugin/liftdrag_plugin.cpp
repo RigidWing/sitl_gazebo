@@ -26,6 +26,9 @@
 #include "gazebo/msgs/msgs.hh"
 #include "liftdrag_plugin/liftdrag_plugin.h"
 
+// KITEPOWER (Xander)
+#include "common.h"
+
 using namespace gazebo;
 
 GZ_REGISTER_MODEL_PLUGIN(LiftDragPlugin)
@@ -54,6 +57,12 @@ LiftDragPlugin::LiftDragPlugin() : cla(1.0), cda(0.01), cma(0.01), rho(1.2041)
 
   /// how much to change CL per every radian of the control joint value
   this->controlJointRadToCL = 4.0;
+
+  /// KITEPOWER
+  this->azimuth_wind		= 0.0; // [rad]
+  this->vel_wind		= 0.0; // [m/s]
+  this->wind_field_sub_topic_	= kDefaultWindFieldSubTopic;
+  this->namespace_		= "";
 }
 
 /////////////////////////////////////////////////
@@ -69,6 +78,9 @@ void LiftDragPlugin::Load(physics::ModelPtr _model,
   GZ_ASSERT(_sdf, "LiftDragPlugin _sdf pointer is NULL");
   this->model = _model;
   this->sdf = _sdf;
+
+  node_handle_ = transport::NodePtr(new transport::Node());
+  node_handle_->Init(namespace_);
 
   this->world = this->model->GetWorld();
   GZ_ASSERT(this->world, "LiftDragPlugin world pointer is NULL");
@@ -160,6 +172,18 @@ void LiftDragPlugin::Load(physics::ModelPtr _model,
 
   if (_sdf->HasElement("control_joint_rad_to_cl"))
     this->controlJointRadToCL = _sdf->Get<double>("control_joint_rad_to_cl");
+
+  // KITEPOWER
+  if (_sdf->HasElement("robotNamespace"))
+    namespace_ = _sdf->GetElement("robotNamespace")->Get<std::string>();
+  else
+    gzerr << "Please specify a robotNamespace.\n";
+  node_handle_ = transport::NodePtr(new transport::Node());
+  node_handle_->Init(namespace_);
+
+  //getSdfParam<std::string>(_sdf, "windFieldSubTopic", wind_field_sub_topic_, wind_field_sub_topic_);
+  //wind_field_sub_ = node_handle_->Subscribe<wind_field_msgs::msgs::WindField>("~/" + this->model->GetName() + wind_field_sub_topic_, &LiftDragPlugin::WindFieldCallback, this);
+  wind_field_sub_ = node_handle_->Subscribe<wind_field_msgs::msgs::WindField>(wind_field_sub_topic_, &LiftDragPlugin::WindFieldCallback, this);
 }
 
 /////////////////////////////////////////////////
@@ -173,6 +197,12 @@ void LiftDragPlugin::OnUpdate()
   ignition::math::Vector3d vel = ignitionFromGazeboMath(this->link->GetWorldLinearVel(this->cp));
 #endif
   ignition::math::Vector3d velI = vel;
+  // FTERO (jonas) & KITEPOWER (Xander)
+  // start ---
+  ignition::math::Vector3d constantWind(this->vel_wind*cos(this->azimuth_wind),this->vel_wind*sin(this->azimuth_wind),0);
+  vel += constantWind;
+  // end   ---
+  math::Vector3 velI = vel;
   velI.Normalize();
 
   // smoothing
@@ -407,6 +437,7 @@ void LiftDragPlugin::OnUpdate()
     gzdbg << "cp momentArm: " << momentArm << "\n";
     gzdbg << "force: " << force << "\n";
     gzdbg << "torque: " << torque << "\n";
+    gzdbg << "wind: " << constantWind << "\n";
   }
 
   // Correct for nan or inf
@@ -415,6 +446,22 @@ void LiftDragPlugin::OnUpdate()
   torque.Correct();
 
   // apply forces at cg (with torques for position shift)
+  // KITEPOWER (Xander)
+  // DEBUGGING PURPOSES
+  //static int ii = 0;
+  //std::string linkname = "left_wing";
+  //if(ii++%10==0 && !linkname.compare(0,9,this->GetHandle()) ){
+  //  printf("Force: %f %f %f\r\n", force[0], force[1], force[2]);
+  //  printf("Wind vel: %f\r\n", this->vel_wind);
+  //  printf("Wind azi: %f\r\n", this->azimuth_wind);
+  //  printf("Const wind vector: %f %f %f\r\n", constantWind[0], constantWind[1], constantWind[2]);
+  //}
   this->link->AddForceAtRelativePosition(force, this->cp);
   this->link->AddTorque(torque);
+}
+
+// KITEPOWER (Xander)
+void LiftDragPlugin::WindFieldCallback(WindFieldPtr &wind_field){
+	vel_wind = wind_field->velocity();
+	azimuth_wind = wind_field->azimuth();
 }
