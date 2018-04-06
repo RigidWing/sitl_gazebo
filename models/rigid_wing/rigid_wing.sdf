@@ -217,7 +217,7 @@
 		<parent>base_link</parent>
 		<pose>0 0 0 0 0 0</pose>
 	</joint>
-	
+
 
 	<link name='rigid_wing/imu_link'>
 	  <pose>0 0 0 0 -0 0</pose>
@@ -255,7 +255,7 @@
 
 	<link name='rotor_0'>
 	<!-- KitePower -->
-	<!--<pose>0.35 -0.43 0.35 0 -0 0</pose>->
+	<!--<pose>0.35 -0.43 0.35 0 -0 0</pose>-->
 	<!-- KiteX -->
 		<pose>0.30 -0.2 0.05 0 -0 0</pose>
       <inertial>
@@ -697,7 +697,7 @@
         </ode>
       </physics>
   </joint>-->
-	
+
 	<!-- KiteX -->
 	<link name="elevator">
 	<pose>0 0 -.63 1.57 1.57  0</pose>
@@ -843,7 +843,7 @@
 	  <upward>1 0 0</upward>
       <link_name>base_link</link_name>
     </plugin>
-	
+
 
 	<!-- KitePower model: Elevator -->
 	<!--
@@ -927,7 +927,7 @@
 	  <upward>0 1 0</upward>
 	  <link_name>base_link</link_name>
   </plugin>-->
-	
+
   <!-- KiteX model: Rudder -->
   <!-- profile: NACA 0012
 	   cord:    60 mm
@@ -951,7 +951,7 @@
 	  <upward>0 1 0</upward>
 	  <link_name>base_link</link_name>
 	</plugin>
-	
+
 	<!-- KiteX model: Vertical wing Left -->
     <!-- profile: ??
 	   cord:    140 mm
@@ -977,7 +977,7 @@
 	  <upward>1 0 0</upward>
 	  <link_name>base_link</link_name>
 	</plugin>
-	
+
 	<!-- KiteX model: Vertical wing  Right -->
     <!-- profile: ??
 	   cord:    140 mm
