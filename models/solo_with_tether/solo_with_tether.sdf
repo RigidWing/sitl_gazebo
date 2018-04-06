@@ -9,13 +9,9 @@
     </include>
     <joint name="tether_joint" type="revolute">
       <child>solo::base_link</child>
-      <parent>tether::link_00</parent>
+      <parent>tether::link_0</parent>
       <axis>
 	<xyz>0 1 0</xyz>
-	<limit>
-	  <lower>-1.57</lower>
-	  <upper>1.57</upper>
-	</limit>
 	<dynamics>
           <damping>0.1</damping>
           <friction>0.0</friction>
@@ -26,10 +22,6 @@
       </axis>
       <axis2>
 	<xyz>0 0 1</xyz>
-	<limit>
-	  <lower>-1.57</lower>
-	  <upper>1.57</upper>
-	</limit>
 	<dynamics>
           <damping>0.1</damping>
           <friction>0.0</friction>
