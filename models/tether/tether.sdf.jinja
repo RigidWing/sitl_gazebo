@@ -115,8 +115,10 @@
       <gravity>true</gravity>
       <pose>{{x}} {{y}} {{z}} 0.0 0.0 {{yaw}}</pose>
       {{ inertial(m) }}
+      {%- if n != last_elem -%}
       {{ collision(cl, cr) }}
       {{ element_visual(cl, cr, element_color) }}
+      {%- endif -%}
       {{ sphere_visual(sr, joint_color) }}
     </link>
 {%- endmacro %}
