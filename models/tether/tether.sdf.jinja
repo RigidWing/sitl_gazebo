@@ -164,7 +164,7 @@
 {%- endmacro -%}
 
 {%- macro lift_drag(n, cl, cr) -%}
-{%- set area = 2 * np.pi * cr * cl -%}
+{%- set area = 2 * cr * cl -%}
     <plugin name="link_{{n}}_drag" filename="libLiftDragPlugin.so">
       <robotNamespace></robotNamespace>
       <a0>0</a0>
