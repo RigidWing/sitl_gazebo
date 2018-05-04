@@ -29,5 +29,3 @@ if __name__ == "__main__":
     with open(filename_out, 'w') as f_out:
         print('{:s} -> {:s}'.format(args.filename, filename_out))
         f_out.write(result)
-
-

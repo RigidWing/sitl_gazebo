@@ -3,13 +3,15 @@
 {#--------------------------:Tweakable parameters:----------------------------#}
 {%- set number_elements = 20 -%}
 {%- set last_elem = number_elements |int - 1 -%}
-{%- set m = 0.03 -%}			{#- m: mass of the element -#}
-{%- set cl = 0.2 -%}			{#- cl: length of the element -#}
-{%- set cr = 0.001 -%}			{#- cr: radius of the element -#}
-{%- set sr = 0.009 -%}			{#- sr: element joint radius (sphere)-#}
+{%- set cl = 0.2 -%}	  {#- cl: length of the element (meters) -#}
+{%- set cr = 0.001 -%}	  {#- cr: radius of the element (meters) -#}
+{%- set sr = 0.009 -%}	  {#- sr: element joint radius (sphere) (meters) -#}
+{%- set y_el = 0.2 -%}	  {#- y_el: length of the Y elements (meters) -#}
+{%- set y_tetha = 18 -%}  {#- y_tetha: angle between the Y elements (degrees)-#}
+{%- set m = 0.03 * cl -%} {#- m: mass of the element (kg), given the length -#}
 {%- set damping = 0.05 -%}
 {%- set friction = 0.0 -%}
-{%- set spring_stiffness = 0.05 -%}
+{%- set spring_stiffness = 0.01 -%}
 {%- set spring_reference = 0.0 -%}
 {%- set element_color = 'White' -%}
 {%- set joint_color = 'Red' -%}
@@ -108,25 +110,31 @@
       </visual>
 {%- endmacro -%}
 
-{%- macro link(n, m, cl, cr, sr, element_color, joint_color) -%}
-{%- set x = n * cl / 2 + ( n - 1) * cl / 2 -%}
-{%- set y = 0.0 -%}
-{%- set z = 0.0 -%}
-<link name="link_{{n}}">
+{%- macro link(n, x, y, z, yaw, m, cl, cr, sr, element_color, joint_color) -%}
+    <link name="link_{{n}}">
       <gravity>true</gravity>
-      <pose>{{x}} {{y}} {{z}} 0.0 0.0 0.0</pose>
+      <pose>{{x}} {{y}} {{z}} 0.0 0.0 {{yaw}}</pose>
       {{ inertial(m) }}
+      {%- if n != last_elem -%}
       {{ collision(cl, cr) }}
       {{ element_visual(cl, cr, element_color) }}
+      {%- endif -%}
       {{ sphere_visual(sr, joint_color) }}
     </link>
-{%- endmacro -%}
+{%- endmacro %}
 
 {%- macro joint(k, damping, friction, spring_stiffness, spring_reference) -%}
+{%- if k is number -%}
 {%- set link_n = k - 1 -%}
-<joint name="joint_{{k}}" type="universal">
+    <joint name="joint_{{k}}" type="universal">
       <child>link_{{k}}</child>
       <parent>link_{{link_n}}</parent>
+{%- else -%}
+{%- set link_n = 0 -%}
+    <joint name="joint_{{k}}" type="universal">
+      <child>link_{{link_n}}</child>
+      <parent>link_{{k}}</parent>
+{%- endif %}
       <axis>
         <xyz>0 1 0</xyz>
         <dynamics>
@@ -156,8 +164,8 @@
 {%- endmacro -%}
 
 {%- macro lift_drag(n, cl, cr) -%}
-{%- set area = 2*3.14159265358*cr*cl -%}
-<plugin name="link{{n}}_drag" filename="libLiftDragPlugin.so">
+{%- set area = 2 * cr * cl -%}
+    <plugin name="link_{{n}}_drag" filename="libLiftDragPlugin.so">
       <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
@@ -171,6 +179,23 @@
       <upward>0 0 1</upward>
       <link_name>link_{{n}}</link_name>
     </plugin>
+{%- endmacro %}
+
+{%- macro y_element(cl, y_el, y_tetha) %}
+{%- set x_l = - cl / 2 -%}
+{%- set y_l = 0.0 -%}
+{%- set z_l = 0.0 -%}
+{%- set yaw_l = - y_tetha / 2 -%}
+    {{ link("y_left", x_l, y_l, z_l, yaw_l, m, y_el, cr, sr, element_color, joint_color) }}
+    {{ lift_drag("y_left", cl, cr) }}
+{%- set x_r = - cl / 2 -%}
+{%- set y_r = 0 -%}
+{%- set z_r = 0.0 -%}
+{%- set yaw_r = y_tetha / 2 %}
+    {{ link("y_right", x_r, y_r, z_r, yaw_r, m, y_el, cr, sr, element_color, joint_color) }}
+    {{ lift_drag("y_right", cl, cr) }}
+    {{ joint("y_left", damping, friction, spring_stiffness, spring_reference) }}
+    {{ joint("y_right", damping, friction, spring_stiffness, spring_reference) }}
 {%- endmacro -%}
 
 <?xml version="1.0" ?>
@@ -179,9 +204,14 @@
   <model name="tether">
     <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
     {% for n in range(number_elements) -%}
-    {{ link(n, m, cl, cr, sr, element_color, joint_color) }}
+    {%- set x = n * cl / 2 + ( n - 1) * cl / 2 -%}
+    {%- set y = 0.0 -%}
+    {%- set z = 0.0 -%}
+    {%- set yaw = 0.0 -%}
+    {{ link(n, x, y, z, yaw, m, cl, cr, sr, element_color, joint_color) }}
     {{ lift_drag(n, cl, cr) }}
     {% endfor -%}
+    {{ y_element(cl, y_el, y_tetha) }}
     {% for k in range(1, number_elements) -%}
     {{ joint(k, damping, friction, spring_stiffness, spring_reference) }}
     {% endfor -%}
