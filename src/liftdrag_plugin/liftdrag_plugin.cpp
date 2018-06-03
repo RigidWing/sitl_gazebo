@@ -59,10 +59,11 @@ LiftDragPlugin::LiftDragPlugin() : cla(1.0), cda(0.01), cma(0.01), rho(1.2041)
   this->controlJointRadToCL = 4.0;
 
   /// KITEPOWER
-  this->azimuth_wind		= 0.0; // [rad]
-  this->vel_wind		= 0.0; // [m/s]
-  this->wind_field_sub_topic_	= kDefaultWindFieldSubTopic;
-  this->namespace_		= "";
+  this->azimuth_wind			= 0.0; // [rad]
+  this->vel_wind			= 0.0; // [m/s]
+  this->wind_field_sub_topic_		= kDefaultWindFieldSubTopic;
+  this->namespace_			= "";
+  this->useConstantDragCoefficient	= true;
 }
 
 /////////////////////////////////////////////////
@@ -180,6 +181,12 @@ void LiftDragPlugin::Load(physics::ModelPtr _model,
     gzerr << "Please specify a robotNamespace.\n";
   node_handle_ = transport::NodePtr(new transport::Node());
   node_handle_->Init(namespace_);
+
+  // KITEPOWER
+  if (_sdf->HasElement("useConstantDragCoefficient"))
+  {
+    this->useConstantDragCoefficient = _sdf->Get<bool>("useConstantDragCoefficient");
+  }
 
   //getSdfParam<std::string>(_sdf, "windFieldSubTopic", wind_field_sub_topic_, wind_field_sub_topic_);
   //wind_field_sub_ = node_handle_->Subscribe<wind_field_msgs::msgs::WindField>("~/" + this->model->GetName() + wind_field_sub_topic_, &LiftDragPlugin::WindFieldCallback, this);
@@ -337,21 +344,33 @@ void LiftDragPlugin::OnUpdate()
   ignition::math::Vector3d lift = cl * q * this->area * liftI;
 
   // compute cd at cp, check for stall, correct for sweep
+  // KITEPOWER: if useConstantDragCoefficient is true, computes the drag
+  // coefficient based on the cda and cda_stall only without considering
+  // an angle of attach of an airfoil
   double cd;
   if (this->alpha > this->alphaStall)
-  {
-    cd = (this->cda * this->alphaStall +
-          this->cdaStall * (this->alpha - this->alphaStall))
-         * cosSweepAngle;
+  { // KITEPOWER
+    if (!this->useConstantDragCoefficient)
+      cd = (this->cda * this->alphaStall +
+            this->cdaStall * (this->alpha - this->alphaStall))
+           * cosSweepAngle;
+    else
+      cd = (this->cda + this->cdaStall) * cosSweepAngle;
   }
   else if (this->alpha < -this->alphaStall)
-  {
-    cd = (-this->cda * this->alphaStall +
-          this->cdaStall * (this->alpha + this->alphaStall))
-         * cosSweepAngle;
+  { // KITEPOWER
+    if (!this->useConstantDragCoefficient)
+      cd = (-this->cda * this->alphaStall +
+            this->cdaStall * (this->alpha + this->alphaStall))
+           * cosSweepAngle;
+    else
+      cd = (-this->cda + this->cdaStall) * cosSweepAngle;
   }
-  else
-    cd = (this->cda * this->alpha) * cosSweepAngle;
+  else // KITEPOWER
+    if (!this->useConstantDragCoefficient)
+      cd = (this->cda * this->alpha) * cosSweepAngle;
+    else
+      cd = this->cda * cosSweepAngle;
 
   // make sure drag is positive
   cd = fabs(cd);

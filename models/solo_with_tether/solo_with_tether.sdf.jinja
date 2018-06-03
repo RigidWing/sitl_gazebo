@@ -71,7 +71,7 @@
 
 {%- macro collision(tl, cr) -%}
 <collision name="collision">
-        <pose>0.1 0 0 0 1.570790 0</pose>
+        <pose>{{tl / 2}} 0 0 0 1.570790 0</pose>
         {{ cylinder(tl, cr) }}
         <surface>
           <contact>
@@ -199,7 +199,8 @@
       <cda>{{cda}}</cda>
       <alpha_stall>0</alpha_stall>
       <cda_stall>{{cda_stall}}</cda_stall>
-      <cp>0 0 0</cp>
+      <useConstantDragCoefficient>true</useConstantDragCoefficient>
+      <cp>{{tl / 2}} {{cr}} {{cr}}</cp>
       <area>{{area}}</area>
       <air_density>1.2041</air_density>
       <forward>0 1 0</forward>

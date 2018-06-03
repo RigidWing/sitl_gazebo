@@ -149,16 +149,20 @@ typedef const boost::shared_ptr<const wind_field_msgs::msgs::WindField> WindFiel
 
     // KITEPOWER (Xander)
     private:
-		transport::NodePtr node_handle_;
-		std::string wind_field_sub_topic_;
-		transport::SubscriberPtr wind_field_sub_;
-		void WindFieldCallback(WindFieldPtr &wind_field);
-		std::string namespace_;
+	transport::NodePtr node_handle_;
+	std::string wind_field_sub_topic_;
+	transport::SubscriberPtr wind_field_sub_;
+	void WindFieldCallback(WindFieldPtr &wind_field);
+	std::string namespace_;
 
-	// KITEPOWER (Xander)
-	protected:
-		double azimuth_wind;	// [rad/s]
-		double vel_wind;		// [m/s]
+    // KITEPOWER (Xander)
+    protected:
+	double azimuth_wind;	// [rad/s]
+	double vel_wind;	// [m/s]
+
+    // KITEPOWER
+    /// \brief set to true to use constant Coefficient of Drag
+    protected: bool useConstantDragCoefficient;
   };
 }
 #endif
