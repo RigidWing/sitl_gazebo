@@ -2,7 +2,6 @@
 {#--------------------------------The parameters bellow are the ones to be tweaked---------------------------#}
 {#--------------------------------------------:Tweakable parameters:-----------------------------------------#}
 {%- set number_elements = 20 -%}
-{%- set last_elem = number_elements |int - 1 -%}
 {%- set tl = 0.2 -%}	  			{#- tl: length of the tether element (meters) -#}
 {%- set cr = 0.001 -%}	  			{#- cr: radius of the tether element (meters) -#}
 {%- set cr_v = 0.003 -%}	  		{#- cr_v: radius of the tether element visual (meters) -#}
@@ -24,6 +23,7 @@
 {%- set vehicle_to_attach_dist = 0.25 -%}	{#- Relative distance in X from the vehicle to the attachment points. This approach is used instead the vehicle spawn X point to avoid mistakes. WARNING: has to be greater or equal than tl! -#}
 {#-----------------------------------------------------------------------------------------------------------#}
 {#---------------------------------------------:Computed parameters:-----------------------------------------#}
+{%- set last_elem = number_elements |int - 1 -%}
 {%- set full_tether_len = number_elements * tl / 2 + (number_elements - 1) * tl / 2 -%}
 {%- set vehicle_spawn_point_x = anchor_point_x + full_tether_len + vehicle_to_attach_dist + vehicle_attach_x -%}
 {%- set vehicle_spawn_point_y = anchor_point_y -%}
