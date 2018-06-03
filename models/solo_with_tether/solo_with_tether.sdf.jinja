@@ -1,26 +1,31 @@
-{#--------------SDF generator for Solo with Tether Gazebo model---------------#}
-{#--------------The parameters bellow are the ones to be tweaked--------------#}
-{#--------------------------:Tweakable parameters:----------------------------#}
+{#--------------------------------SDF generator for Solo with Tether Gazebo model----------------------------#}
+{#--------------------------------The parameters bellow are the ones to be tweaked---------------------------#}
+{#--------------------------------------------:Tweakable parameters:-----------------------------------------#}
 {%- set number_elements = 20 -%}
 {%- set last_elem = number_elements |int - 1 -%}
-{%- set tl = 0.2 -%}	  {#- tl: length of the tether element (meters) -#}
-{%- set cr = 0.001 -%}	  {#- cr: radius of the tether element (meters) -#}
-{%- set sr = 0.009 -%}	  {#- sr: element joint radius (sphere) (meters) -#}
-{%- set y_el = 0.2 -%}	  {#- y_el: length of the Y elements (meters) -#}
-{%- set m = 0.03 * tl -%} {#- m: mass of the element (kg), given the length -#}
+{%- set tl = 0.2 -%}	  			{#- tl: length of the tether element (meters) -#}
+{%- set cr = 0.001 -%}	  			{#- cr: radius of the tether element (meters) -#}
+{%- set sr = 0.009 -%}	  			{#- sr: element joint radius (sphere) (meters) -#}
+{%- set m = 0.03 * tl -%}			{#- m: mass of the element (kg), given the length -#}
 {%- set damping = 0.05 -%}
 {%- set friction = 0.0 -%}
 {%- set spring_stiffness = 0.01 -%}
 {%- set spring_reference = 0.0 -%}
 {%- set element_color = 'White' -%}
 {%- set joint_color = 'Red' -%}
-{%- set anchor_point_x = 1 -%}
-{%- set anchor_point_y = 2 -%}
-{%- set vehicle_attach_x = 0.05 -%}
-{%- set vehicle_attach_y = 0.05 -%}
-{%- set vehicle_spawn_point_x = anchor_point_x + tl + vehicle_attach_x + (number_elements * tl / 2 + (number_elements - 1) * tl / 2) + vehicle_attach_y / np.tan(np.arcsin(vehicle_attach_y / y_el)) -%}
+{%- set anchor_point_x = 0.0 -%}		{#- X coordinate of the anchor point -#}
+{%- set anchor_point_y = 0.0 -%}		{#- Y coordinate of the anchor point -#}
+{%- set vehicle_attach_x = 0.05 -%}		{#- X coordinate of the attach point -#}
+{%- set vehicle_attach_y = 0.05 -%}		{#- Y coordinate of the attach point -#}
+{%- set vehicle_attach_z = 0.16 -%}		{#- Z coordinate of the attach point -#}
+{%- set vehicle_to_attach_dist = 0.25 -%}	{#- relative distance from the vehicle to the attachment points. WARN: has to be greater or equal than tl! -#}
+{#-----------------------------------------------------------------------------------------------------------#}
+{#---------------------------------------------:Computed parameters:-----------------------------------------#}
+{%- set full_tether_len = number_elements * tl / 2 + (number_elements - 1) * tl / 2 -%}
+{%- set vehicle_spawn_point_x = anchor_point_x + full_tether_len + vehicle_to_attach_dist + vehicle_attach_x -%}
 {%- set vehicle_spawn_point_y = anchor_point_y -%}
-{#----------------------------------------------------------------------------#}
+{%- set y_el = np.sqrt(np.power(vehicle_spawn_point_x - full_tether_len - tl / 2 - anchor_point_x - vehicle_attach_x, 2) + np.power(vehicle_spawn_point_y - anchor_point_y - vehicle_attach_y, 2) + np.power(vehicle_attach_z, 2)) -%}
+{#-----------------------------------------------------------------------------------------------------------#}
 
 {%- macro cylinder(tl, cr) -%}
       <geometry>
@@ -120,11 +125,13 @@
       <gravity>true</gravity>
       <pose>{{x}} {{y}} {{z}} 0.0 0.0 {{theta}}</pose>
       {{ inertial(m) }}
-      {%- if n != "world" and n != "y_left_fixed" and n != "y_right_fixed" -%}
+      {%- if n != 0 and n != "y_left_fixed" and n != "y_right_fixed" -%}
       {{ collision(tl, cr) }}
       {{ element_visual(tl, cr, element_color) }}
       {%- endif -%}
+      {%- if n != 0 -%}
       {{ sphere_visual(sr, joint_color) }}
+      {%- endif -%}
     </link>
 {%- endmacro %}
 
@@ -135,12 +142,7 @@
       <child>link_{{k}}</child>
       <parent>link_{{link_n}}</parent>
 {%- else -%}
-{%- if k == "world" -%}
-{%- set link_n = 0 -%}
-    <joint name="joint_{{k}}" type="{{joint_type}}">
-      <child>link_{{link_n}}</child>
-      <parent>link_{{k}}</parent>
-{%- elif k == "y_left_fixed" -%}
+{%- if k == "y_left_fixed" -%}
 {%- set link_n = "y_left" -%}
     <joint name="joint_{{k}}" type="{{joint_type}}">
       <child>link_{{k}}</child>
@@ -203,7 +205,7 @@
     </plugin>
 {%- endmacro %}
 
-{%- macro y_element(tl, y_el) %}
+{%- macro y_element(y_el, tl) %}
     {#- Lose elements: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -#}
     {%- set theta = np.arcsin(vehicle_attach_y / y_el) -%}
     {%- set lose_x = anchor_point_x + tl / 2 + (number_elements * tl / 2 + (number_elements - 1) * tl / 2) -%}
@@ -227,21 +229,19 @@
 <!-- DO NOT EDIT: Generated from solo_with_tether.sdf.jinja -->
 <sdf version="1.5">
   <model name="solo_with_tether">
-    <pose>{{anchor_point_x}} {{anchor_point_y}} 0.0 0.0 0.0 0.0</pose>
-    {{ link("world", anchor_point_x, anchor_point_y, 0.0, 0.0, m, tl, cr, sr, element_color, joint_color) }}
-    {{ joint("world", damping, friction, spring_stiffness, spring_reference, "universal") }}
+    <pose>{{anchor_point_x - tl}} {{anchor_point_y}} 0.0 0.0 0.0 0.0</pose>
     {% for n in range(number_elements) -%}
     {%- set x = anchor_point_x + (tl / 2 + (n * tl / 2 + (n - 1) * tl / 2)) -%}
     {{ link(n, x, anchor_point_y, 0.0, 0.0, m, tl, cr, sr, element_color, joint_color) }}
     {{ lift_drag(n, tl, cr) }}
     {% endfor -%}
-    {{ y_element(tl, y_el) }}
+    {{ y_element(y_el, tl) }}
     {% for k in range(1, number_elements) -%}
     {{ joint(k, damping, friction, spring_stiffness, spring_reference, "universal") }}
     {% endfor -%}
     <joint name="fixed_to_world" type="fixed">
       <child>world</child>
-      <parent>link_world</parent>
+      <parent>link_0</parent>
     </joint>
     <include>
       <uri>model://solo</uri>
