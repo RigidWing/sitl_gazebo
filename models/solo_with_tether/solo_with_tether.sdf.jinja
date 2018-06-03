@@ -5,6 +5,7 @@
 {%- set last_elem = number_elements |int - 1 -%}
 {%- set tl = 0.2 -%}	  			{#- tl: length of the tether element (meters) -#}
 {%- set cr = 0.001 -%}	  			{#- cr: radius of the tether element (meters) -#}
+{%- set cr_v = 0.003 -%}	  		{#- cr_v: radius of the tether element visual (meters) -#}
 {%- set sr = 0.009 -%}	  			{#- sr: element joint radius (sphere) (meters) -#}
 {%- set m = 0.03 * tl -%}			{#- m: mass of the element (kg), given the length -#}
 {%- set damping = 0.05 -%}
@@ -27,11 +28,11 @@
 {%- set y_el = np.sqrt(np.power(vehicle_spawn_point_x - full_tether_len - tl / 2 - anchor_point_x - vehicle_attach_x, 2) + np.power(vehicle_spawn_point_y - anchor_point_y - vehicle_attach_y, 2) + np.power(vehicle_attach_z, 2)) -%}
 {#-----------------------------------------------------------------------------------------------------------#}
 
-{%- macro cylinder(tl, cr) -%}
+{%- macro cylinder(tl, cr_v) -%}
       <geometry>
           <cylinder>
             <length>{{tl}}</length>
-            <radius>{{cr}}</radius>
+            <radius>{{cr_v}}</radius>
           </cylinder>
         </geometry>
 {%- endmacro -%}
@@ -104,11 +105,11 @@
       </material>
 {%- endmacro -%}
 
-{%- macro element_visual(tl, cr, element_color) -%}
+{%- macro element_visual(tl, cr_v, element_color) -%}
 {%- set x = tl * 0.5 -%}
       <visual name="element_visual">
         <pose>{{x}} 0 0 0 1.570790 0</pose>
-        {{ cylinder(tl, cr) }}
+        {{ cylinder(tl, cr_v) }}
         {{ element_material(element_color) }}
       </visual>
 {%- endmacro -%}
@@ -120,14 +121,14 @@
       </visual>
 {%- endmacro -%}
 
-{%- macro link(n, x, y, z, theta, m, tl, cr, sr, element_color, joint_color) -%}
+{%- macro link(n, x, y, z, theta, m, tl, cr, cr_v, sr, element_color, joint_color) -%}
     <link name="link_{{n}}">
       <gravity>true</gravity>
       <pose>{{x}} {{y}} {{z}} 0.0 0.0 {{theta}}</pose>
       {{ inertial(m) }}
       {%- if n != 0 and n != "y_left_fixed" and n != "y_right_fixed" -%}
       {{ collision(tl, cr) }}
-      {{ element_visual(tl, cr, element_color) }}
+      {{ element_visual(tl, cr_v, element_color) }}
       {%- endif -%}
       {%- if n != 0 -%}
       {{ sphere_visual(sr, joint_color) }}
@@ -209,17 +210,17 @@
     {#- Lose elements: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -#}
     {%- set theta = np.arcsin(vehicle_attach_y / y_el) -%}
     {%- set lose_x = anchor_point_x + tl / 2 + (number_elements * tl / 2 + (number_elements - 1) * tl / 2) -%}
-    {{ link("y_left", lose_x, anchor_point_y, 0.0, theta, m, y_el, cr, sr, element_color, joint_color) }}
+    {{ link("y_left", lose_x, anchor_point_y, 0.0, theta, m, y_el, cr, cr_v, sr, element_color, joint_color) }}
     {{ lift_drag("y_left", tl, cr) }}
-    {{ link("y_right", lose_x, anchor_point_y, 0.0, -theta, m, y_el, cr, sr, element_color, joint_color) }}
+    {{ link("y_right", lose_x, anchor_point_y, 0.0, -theta, m, y_el, cr, cr_v, sr, element_color, joint_color) }}
     {{ lift_drag("y_right", tl, cr) }}
     {{ joint("y_left", damping, friction, spring_stiffness, spring_reference, "universal") }}
     {{ joint("y_right", damping, friction, spring_stiffness, spring_reference, "universal") }}
     {#- Fixed elements: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -#}
     {%- set fixed_x = lose_x + vehicle_attach_y / np.tan(theta) -%}
-    {{ link("y_left_fixed", fixed_x, anchor_point_y + vehicle_attach_y, 0.0, 0.0, m, y_el, cr, sr, element_color, joint_color) }}
+    {{ link("y_left_fixed", fixed_x, anchor_point_y + vehicle_attach_y, 0.0, 0.0, m, y_el, cr, cr_v, sr, element_color, joint_color) }}
     {{ lift_drag("y_left_fixed", tl, cr) }}
-    {{ link("y_right_fixed", fixed_x, anchor_point_y - vehicle_attach_y, 0.0, 0.0, m, y_el, cr, sr, element_color, joint_color) }}
+    {{ link("y_right_fixed", fixed_x, anchor_point_y - vehicle_attach_y, 0.0, 0.0, m, y_el, cr, cr_v, sr, element_color, joint_color) }}
     {{ lift_drag("y_right_fixed", tl, cr) }}
     {{ joint("y_left_fixed", damping, friction, spring_stiffness, spring_reference, "revolute") }}
     {{ joint("y_right_fixed", damping, friction, spring_stiffness, spring_reference, "revolute") }}
@@ -232,7 +233,7 @@
     <pose>{{anchor_point_x - tl}} {{anchor_point_y}} 0.0 0.0 0.0 0.0</pose>
     {% for n in range(number_elements) -%}
     {%- set x = anchor_point_x + (tl / 2 + (n * tl / 2 + (n - 1) * tl / 2)) -%}
-    {{ link(n, x, anchor_point_y, 0.0, 0.0, m, tl, cr, sr, element_color, joint_color) }}
+    {{ link(n, x, anchor_point_y, 0.0, 0.0, m, tl, cr, cr_v, sr, element_color, joint_color) }}
     {{ lift_drag(n, tl, cr) }}
     {% endfor -%}
     {{ y_element(y_el, tl) }}
