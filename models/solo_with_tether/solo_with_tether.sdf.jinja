@@ -8,6 +8,8 @@
 {%- set cr_v = 0.003 -%}	  		{#- cr_v: radius of the tether element visual (meters) -#}
 {%- set sr = 0.009 -%}	  			{#- sr: element joint radius (sphere) (meters) -#}
 {%- set m = 0.03 * tl -%}			{#- m: mass of the element (kg), given the length -#}
+{%- set cda = 1.2535816618911175 -%}		{#- cda: the ratio of the drag coefficient before stall. -#}
+{%- set cda_stall = 1.4326647564469914 -%}	{#- cda_stall: the ratio of the drag coefficient after stall. -#}
 {%- set damping = 0.05 -%}
 {%- set friction = 0.0 -%}
 {%- set spring_stiffness = 0.01 -%}
@@ -194,9 +196,9 @@
       <robotNamespace></robotNamespace>
       <a0>0</a0>
       <cla>0</cla>
-      <cda>1.2535816618911175</cda>
+      <cda>{{cda}}</cda>
       <alpha_stall>0</alpha_stall>
-      <cda_stall>1.4326647564469914</cda_stall>
+      <cda_stall>{{cda_stall}}</cda_stall>
       <cp>0 0 0</cp>
       <area>{{area}}</area>
       <air_density>1.2041</air_density>
