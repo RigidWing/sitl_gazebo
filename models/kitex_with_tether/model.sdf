@@ -1,4 +1,5 @@
 <?xml version='1.0'?>
+<!-- USE kitex_with_tether-gen.sdf INSTEAD -->
 <sdf version='1.5'>
   <model name='kitex_with_tether'>
     <include>
