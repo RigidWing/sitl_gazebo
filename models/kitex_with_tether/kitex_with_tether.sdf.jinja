@@ -10,18 +10,18 @@
 {%- set m = 0.03 * tl -%}			{#- m: mass of the element (kg), given the length -#}
 {%- set cda = 1.2535816618911175 -%}		{#- cda: the ratio of the drag coefficient before stall. -#}
 {%- set cda_stall = 1.4326647564469914 -%}	{#- cda_stall: the ratio of the drag coefficient after stall. -#}
-{%- set damping = 0.05 -%}
-{%- set friction = 0.0 -%}
-{%- set spring_stiffness = 0.01 -%}
-{%- set spring_reference = 0.0 -%}
-{%- set element_color = 'White' -%}
-{%- set joint_color = 'Red' -%}
-{%- set anchor_point_x = 0.0 -%}		{#- X coordinate of the anchor point -#}
-{%- set anchor_point_y = 0.0 -%}		{#- Y coordinate of the anchor point -#}
-{%- set vehicle_attach_x = 0.05 -%}		{#- X coordinate of the attach point -#}
-{%- set vehicle_attach_y = 0.05 -%}		{#- Y coordinate of the attach point -#}
-{%- set vehicle_attach_z = 0.16 -%}		{#- Z coordinate of the attach point -#}
-{%- set vehicle_to_attach_dist = 0.25 -%}	{#- relative distance from the vehicle to the attachment points. WARN: has to be greater or equal than tl! -#}
+{%- set damping = 0.05 -%}			{#- Model damping -#}
+{%- set friction = 0.0 -%}			{#- Friction of the model relative to the world -#}
+{%- set spring_stiffness = 0.01 -%}		{#- Spring stiffness -#}
+{%- set spring_reference = 0.0 -%}		{#- Reference where the spring forces are applied -#}
+{%- set element_color = 'White' -%}		{#- Color of the tether elements -#}
+{%- set joint_color = 'Red' -%}		{#- Color of the tether element joints -#}
+{%- set anchor_point_x = 0.0 -%}		{#- X coordinate of the anchor point. This is the model global origin -#}
+{%- set anchor_point_y = 0.0 -%}		{#- Y coordinate of the anchor point. This is the model global origin -#}
+{%- set vehicle_attach_x = 0.05 -%}		{#- X coordinate of the attach point. Subtracted to the vehicle spawn position to give the attach point -#}
+{%- set vehicle_attach_y = 0.05 -%}		{#- Y coordinate of the attach point. Subtracted to the vehicle spawn position to give the attach point -#}
+{%- set vehicle_attach_z = 0.16 -%}		{#- Z coordinate of the attach point. Subtracted to the vehicle spawn position to give the attach point -#}
+{%- set vehicle_to_attach_dist = 0.25 -%}	{#- Relative distance in X from the vehicle to the attachment points. This approach is used instead the vehicle spawn X point to avoid mistakes. WARNING: has to be greater or equal than tl! -#}
 {#------------------------------------------------------------------------------------------------------------#}
 {#---------------------------------------------:Computed parameters:------------------------------------------#}
 {%- set full_tether_len = number_elements * tl / 2 + (number_elements - 1) * tl / 2 -%}
