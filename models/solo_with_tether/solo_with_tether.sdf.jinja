@@ -14,10 +14,12 @@
 {%- set spring_reference = 0.0 -%}
 {%- set element_color = 'White' -%}
 {%- set joint_color = 'Red' -%}
-{%- set anchor_point_x = 0 -%}
-{%- set anchor_point_y = 0 -%}
+{%- set anchor_point_x = 1 -%}
+{%- set anchor_point_y = 2 -%}
 {%- set vehicle_attach_x = 0.05 -%}
 {%- set vehicle_attach_y = 0.05 -%}
+{%- set vehicle_spawn_point_x = anchor_point_x + tl + vehicle_attach_x + (number_elements * tl / 2 + (number_elements - 1) * tl / 2) + vehicle_attach_y / np.tan(np.arcsin(vehicle_attach_y / y_el)) -%}
+{%- set vehicle_spawn_point_y = anchor_point_y -%}
 {#----------------------------------------------------------------------------#}
 
 {%- macro cylinder(tl, cr) -%}
@@ -118,7 +120,7 @@
       <gravity>true</gravity>
       <pose>{{x}} {{y}} {{z}} 0.0 0.0 {{theta}}</pose>
       {{ inertial(m) }}
-      {%- if n != last_elem and n != "y_left_fixed" and n != "y_right_fixed" -%}
+      {%- if n != "world" and n != "y_left_fixed" and n != "y_right_fixed" -%}
       {{ collision(tl, cr) }}
       {{ element_visual(tl, cr, element_color) }}
       {%- endif -%}
@@ -133,7 +135,12 @@
       <child>link_{{k}}</child>
       <parent>link_{{link_n}}</parent>
 {%- else -%}
-{%- if k == "y_left_fixed" -%}
+{%- if k == "world" -%}
+{%- set link_n = 0 -%}
+    <joint name="joint_{{k}}" type="{{joint_type}}">
+      <child>link_{{link_n}}</child>
+      <parent>link_{{k}}</parent>
+{%- elif k == "y_left_fixed" -%}
 {%- set link_n = "y_left" -%}
     <joint name="joint_{{k}}" type="{{joint_type}}">
       <child>link_{{k}}</child>
@@ -144,7 +151,7 @@
       <child>link_{{k}}</child>
       <parent>link_{{link_n}}</parent>
 {%- else -%}
-{%- set link_n = 0 -%}
+{%- set link_n = last_elem -%}
     <joint name="joint_{{k}}" type="{{joint_type}}">
       <child>link_{{k}}</child>
       <parent>link_{{link_n}}</parent>
@@ -197,19 +204,20 @@
 {%- endmacro %}
 
 {%- macro y_element(tl, y_el) %}
-    {%- set theta = np.arcsin(vehicle_attach_y / y_el) -%}
-    {%- set fixed_x = vehicle_attach_y / np.tan(theta) -%}
     {#- Lose elements: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -#}
-    {{ link("y_left", 0.0, 0.0, 0.0, theta, m, y_el, cr, sr, element_color, joint_color) }}
+    {%- set theta = np.arcsin(vehicle_attach_y / y_el) -%}
+    {%- set lose_x = anchor_point_x + tl / 2 + (number_elements * tl / 2 + (number_elements - 1) * tl / 2) -%}
+    {{ link("y_left", lose_x, anchor_point_y, 0.0, theta, m, y_el, cr, sr, element_color, joint_color) }}
     {{ lift_drag("y_left", tl, cr) }}
-    {{ link("y_right", 0.0, 0.0, 0.0, -theta, m, y_el, cr, sr, element_color, joint_color) }}
+    {{ link("y_right", lose_x, anchor_point_y, 0.0, -theta, m, y_el, cr, sr, element_color, joint_color) }}
     {{ lift_drag("y_right", tl, cr) }}
     {{ joint("y_left", damping, friction, spring_stiffness, spring_reference, "universal") }}
     {{ joint("y_right", damping, friction, spring_stiffness, spring_reference, "universal") }}
     {#- Fixed elements: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -#}
-    {{ link("y_left_fixed", fixed_x, vehicle_attach_y, 0.0, 0.0, m, y_el, cr, sr, element_color, joint_color) }}
+    {%- set fixed_x = lose_x + vehicle_attach_y / np.tan(theta) -%}
+    {{ link("y_left_fixed", fixed_x, anchor_point_y + vehicle_attach_y, 0.0, 0.0, m, y_el, cr, sr, element_color, joint_color) }}
     {{ lift_drag("y_left_fixed", tl, cr) }}
-    {{ link("y_right_fixed", fixed_x, -vehicle_attach_y, 0.0, 0.0, m, y_el, cr, sr, element_color, joint_color) }}
+    {{ link("y_right_fixed", fixed_x, anchor_point_y - vehicle_attach_y, 0.0, 0.0, m, y_el, cr, sr, element_color, joint_color) }}
     {{ lift_drag("y_right_fixed", tl, cr) }}
     {{ joint("y_left_fixed", damping, friction, spring_stiffness, spring_reference, "revolute") }}
     {{ joint("y_right_fixed", damping, friction, spring_stiffness, spring_reference, "revolute") }}
@@ -219,10 +227,11 @@
 <!-- DO NOT EDIT: Generated from solo_with_tether.sdf.jinja -->
 <sdf version="1.5">
   <model name="solo_with_tether">
-    {%- set vehicle_spawn_point_x = anchor_point_x + vehicle_attach_x + number_elements * tl / 2 + (number_elements - 1) * tl / 2 -%}
-    <pose>{{vehicle_spawn_point_x}} 0.0 0.0 0.0 0.0 0.0</pose>
+    <pose>{{anchor_point_x}} {{anchor_point_y}} 0.0 0.0 0.0 0.0</pose>
+    {{ link("world", anchor_point_x, anchor_point_y, 0.0, 0.0, m, tl, cr, sr, element_color, joint_color) }}
+    {{ joint("world", damping, friction, spring_stiffness, spring_reference, "universal") }}
     {% for n in range(number_elements) -%}
-    {%- set x = anchor_point_x - tl - vehicle_attach_x - (n * tl / 2 + (n - 1) * tl / 2) -%}
+    {%- set x = anchor_point_x + (tl / 2 + (n * tl / 2 + (n - 1) * tl / 2)) -%}
     {{ link(n, x, anchor_point_y, 0.0, 0.0, m, tl, cr, sr, element_color, joint_color) }}
     {{ lift_drag(n, tl, cr) }}
     {% endfor -%}
@@ -231,15 +240,15 @@
     {{ joint(k, damping, friction, spring_stiffness, spring_reference, "universal") }}
     {% endfor -%}
     <joint name="fixed_to_world" type="fixed">
-      <child>link_{{last_elem}}</child>
-      <parent>world</parent>
+      <child>world</child>
+      <parent>link_world</parent>
     </joint>
     <include>
       <uri>model://solo</uri>
-      <pose>{{anchor_point_x + vehicle_attach_y / np.tan(np.arcsin(vehicle_attach_y / y_el))}} {{anchor_point_y}} 0.0 0.0 0.0 0.0</pose>
+      <pose>{{vehicle_spawn_point_x}} {{vehicle_spawn_point_y}} 0.0 0.0 0.0 0.0</pose>
     </include>
     <link name='solo_left'>
-      <pose>{{-vehicle_attach_x}} {{vehicle_attach_y}} 0.05 0 0 0</pose>
+      <pose>{{vehicle_spawn_point_x - vehicle_attach_x}} {{vehicle_spawn_point_y - vehicle_attach_y}} 0.05 0 0 0</pose>
       <inertial>
         <pose>0 0 0 0 0 0</pose>
         <mass>0.005</mass>
@@ -258,7 +267,7 @@
       <parent>solo::base_link</parent>
     </joint>
     <link name='solo_right'>
-      <pose>{{-vehicle_attach_x}} {{-vehicle_attach_y}} 0.05 0 0 0</pose>
+      <pose>{{vehicle_spawn_point_x - vehicle_attach_x}} {{vehicle_spawn_point_y + vehicle_attach_y}} 0.05 0 0 0</pose>
       <inertial>
         <pose>0 0 0 0 0 0</pose>
         <mass>0.005</mass>
