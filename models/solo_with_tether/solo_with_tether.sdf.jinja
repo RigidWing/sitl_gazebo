@@ -1,0 +1,367 @@
+{#--------------------------------SDF generator for Solo with Tether Gazebo model----------------------------#}
+{#--------------------------------The parameters bellow are the ones to be tweaked---------------------------#}
+{#--------------------------------------------:Tweakable parameters:-----------------------------------------#}
+{%- set number_elements = 20 -%}
+{%- set tl = 0.2 -%}	  			{#- tl: length of the tether element (meters) -#}
+{%- set cr = 0.001 -%}	  			{#- cr: radius of the tether element (meters) -#}
+{%- set cr_v = 0.003 -%}	  		{#- cr_v: radius of the tether element visual (meters) -#}
+{%- set sr = 0.009 -%}	  			{#- sr: element joint radius (sphere) (meters) -#}
+{%- set m = 0.03 * tl -%}			{#- m: mass of the element (kg), given the length -#}
+{%- set cda = 1.2535816618911175 -%}		{#- cda: the ratio of the drag coefficient before stall. -#}
+{%- set cda_stall = 1.4326647564469914 -%}	{#- cda_stall: the ratio of the drag coefficient after stall. -#}
+{%- set damping = 0.05 -%}			{#- Model damping -#}
+{%- set friction = 0.0 -%}			{#- Friction of the model relative to the world -#}
+{%- set spring_stiffness = 0.01 -%}		{#- Spring stiffness -#}
+{%- set spring_reference = 0.0 -%}		{#- Reference where the spring forces are applied -#}
+{%- set element_color = 'White' -%}		{#- Color of the tether elements -#}
+{%- set joint_color = 'Red' -%}		{#- Color of the tether element joints -#}
+{%- set anchor_point_x = 0.0 -%}		{#- X coordinate of the anchor point. This is the model global origin -#}
+{%- set anchor_point_y = 0.0 -%}		{#- Y coordinate of the anchor point. This is the model global origin -#}
+{%- set vehicle_attach_x = 0.05 -%}		{#- X coordinate of the attach point. Subtracted to the vehicle spawn position to give the attach point -#}
+{%- set vehicle_attach_y = 0.05 -%}		{#- Y coordinate of the attach point. Subtracted to the vehicle spawn position to give the attach point -#}
+{%- set vehicle_attach_z = 0.16 -%}		{#- Z coordinate of the attach point. Subtracted to the vehicle spawn position to give the attach point -#}
+{%- set vehicle_to_attach_dist = 0.25 -%}	{#- Relative distance in X from the vehicle to the attachment points. This approach is used instead the vehicle spawn X point to avoid mistakes. WARNING: has to be greater or equal than tl! -#}
+{#-----------------------------------------------------------------------------------------------------------#}
+{#---------------------------------------------:Computed parameters:-----------------------------------------#}
+{%- set last_elem = number_elements |int - 1 -%}
+{%- set full_tether_len = number_elements * tl / 2 + (number_elements - 1) * tl / 2 -%}
+{%- set vehicle_spawn_point_x = anchor_point_x + full_tether_len + vehicle_to_attach_dist + vehicle_attach_x -%}
+{%- set vehicle_spawn_point_y = anchor_point_y -%}
+{%- set y_el = np.sqrt(np.power(vehicle_spawn_point_x - full_tether_len - tl / 2 - anchor_point_x - vehicle_attach_x, 2) + np.power(vehicle_spawn_point_y - anchor_point_y - vehicle_attach_y, 2) + np.power(vehicle_attach_z, 2)) -%}
+{#-----------------------------------------------------------------------------------------------------------#}
+
+{%- macro cylinder(tl, cr_v) -%}
+      <geometry>
+          <cylinder>
+            <length>{{tl}}</length>
+            <radius>{{cr_v}}</radius>
+          </cylinder>
+        </geometry>
+{%- endmacro -%}
+
+{%- macro sphere(sr) -%}
+      <geometry>
+          <sphere>
+            <radius>{{sr}}</radius>
+          </sphere>
+        </geometry>
+{%- endmacro -%}
+
+{%- macro inertial(m) -%}
+{#- A note about the inertial tensor matrix - It should be as bellow -#}
+{#- {%- set izz = m/2*cr**2 -%} -#}
+{#- {%- set ixx = m/12*tl**2 + m/4*cr**2 -%} -#}
+{#- {%- set iyy = m/12*tl**2 + m/4*cr**2 -%} -#}
+{#- but seems to segfault Gazebo when changing the values of the element specs -#}
+{%- set izz = 0.01 -%}
+{%- set ixx = 0.01 -%}
+{%- set iyy = 0.01 -%}
+      <inertial>
+        <mass>{{m}}</mass>
+        <inertia>
+          <ixx>{{ixx}}</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>{{iyy}}</iyy>
+          <iyz>0</iyz>
+          <izz>{{izz}}</izz>
+        </inertia>
+      </inertial>
+{%- endmacro -%}
+
+{%- macro collision(tl, cr) -%}
+<collision name="collision">
+        <pose>{{tl / 2}} 0 0 0 1.570790 0</pose>
+        {{ cylinder(tl, cr) }}
+        <surface>
+          <contact>
+            <ode>
+	      <min_depth>0.00005</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode>
+	      <mu>1.0</mu>
+	      <mu2>1.0</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+{%- endmacro -%}
+
+{%- macro element_material(element_color) -%}
+      <material>
+        <script>
+          <name>Gazebo/{{element_color}}</name>
+          <uri>file://media/materials/scripts/gazebo.material</uri>
+        </script>
+      </material>
+{%- endmacro -%}
+
+{%- macro joint_material(joint_color) -%}
+      <material>
+        <script>
+          <name>Gazebo/{{joint_color}}</name>
+          <uri>file://media/materials/scripts/gazebo.material</uri>
+        </script>
+      </material>
+{%- endmacro -%}
+
+{%- macro element_visual(tl, cr_v, element_color) -%}
+{%- set x = tl * 0.5 -%}
+      <visual name="element_visual">
+        <pose>{{x}} 0 0 0 1.570790 0</pose>
+        {{ cylinder(tl, cr_v) }}
+        {{ element_material(element_color) }}
+      </visual>
+{%- endmacro -%}
+
+{%- macro sphere_visual(sr, sphere_tlor) -%}
+      <visual name="sphere_visual">
+        {{ sphere(sr) }}
+        {{ joint_material(joint_color) }}
+      </visual>
+{%- endmacro -%}
+
+{%- macro link(n, x, y, z, theta, m, tl, cr, cr_v, sr, element_color, joint_color) -%}
+    <link name="link_{{n}}">
+      <gravity>true</gravity>
+      <pose>{{x}} {{y}} {{z}} 0.0 0.0 {{theta}}</pose>
+      {{ inertial(m) }}
+      {%- if n != 0 and n != "y_left_fixed" and n != "y_right_fixed" -%}
+      {{ collision(tl, cr) }}
+      {{ element_visual(tl, cr_v, element_color) }}
+      {%- endif -%}
+      {%- if n != 0 -%}
+      {{ sphere_visual(sr, joint_color) }}
+      {%- endif -%}
+    </link>
+{%- endmacro %}
+
+{%- macro joint(k, damping, friction, spring_stiffness, spring_reference, joint_type) -%}
+{%- if k is number -%}
+{%- set link_n = k - 1 -%}
+    <joint name="joint_{{k}}" type="{{joint_type}}">
+      <child>link_{{k}}</child>
+      <parent>link_{{link_n}}</parent>
+{%- else -%}
+{%- if k == "y_left_fixed" -%}
+{%- set link_n = "y_left" -%}
+    <joint name="joint_{{k}}" type="{{joint_type}}">
+      <child>link_{{k}}</child>
+      <parent>link_{{link_n}}</parent>
+{%- elif k == "y_right_fixed" -%}
+{%- set link_n = "y_right" -%}
+   <joint name="joint_{{k}}" type="{{joint_type}}">
+      <child>link_{{k}}</child>
+      <parent>link_{{link_n}}</parent>
+{%- else -%}
+{%- set link_n = last_elem -%}
+    <joint name="joint_{{k}}" type="{{joint_type}}">
+      <child>link_{{k}}</child>
+      <parent>link_{{link_n}}</parent>
+{%- endif %}
+{%- endif %}
+      <axis>
+        <xyz>0 1 0</xyz>
+        <dynamics>
+          <damping>{{damping}}</damping>
+          <friction>{{friction}}</friction>
+          <spring_stiffness>{{spring_stiffness}}</spring_stiffness>
+          <spring_reference>{{spring_reference}}</spring_reference>
+        </dynamics>
+        <use_parent_model_frame>true</use_parent_model_frame>
+      </axis>
+      <axis2>
+        <xyz>0 0 1</xyz>
+        <dynamics>
+          <damping>{{damping}}</damping>
+          <friction>{{friction}}</friction>
+          <spring_stiffness>{{spring_stiffness}}</spring_stiffness>
+          <spring_reference>{{spring_reference}}</spring_reference>
+        </dynamics>
+        <use_parent_model_frame>true</use_parent_model_frame>
+      </axis2>
+      <physics>
+        <ode>
+          <cfm_damping>1</cfm_damping>
+        </ode>
+      </physics>
+    </joint>
+{%- endmacro -%}
+
+{%- macro lift_drag(n, tl, cr) -%}
+{%- set area = 2 * cr * tl -%}
+    <plugin name="link_{{n}}_drag" filename="libLiftDragPlugin.so">
+      <robotNamespace></robotNamespace>
+      <a0>0</a0>
+      <cla>0</cla>
+      <cda>{{cda}}</cda>
+      <alpha_stall>0</alpha_stall>
+      <cda_stall>{{cda_stall}}</cda_stall>
+      <useConstantDragCoefficient>true</useConstantDragCoefficient>
+      <cp>{{tl / 2}} {{cr}} {{cr}}</cp>
+      <area>{{area}}</area>
+      <air_density>1.2041</air_density>
+      <forward>0 1 0</forward>
+      <upward>0 0 1</upward>
+      <link_name>link_{{n}}</link_name>
+    </plugin>
+{%- endmacro %}
+
+{%- macro y_element(y_el, tl) %}
+    {#- Lose elements: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -#}
+    {%- set theta = np.arcsin(vehicle_attach_y / y_el) -%}
+    {%- set lose_x = anchor_point_x + tl / 2 + (number_elements * tl / 2 + (number_elements - 1) * tl / 2) -%}
+    {{ link("y_left", lose_x, anchor_point_y, 0.0, theta, m, y_el, cr, cr_v, sr, element_color, joint_color) }}
+    {{ lift_drag("y_left", tl, cr) }}
+    {{ link("y_right", lose_x, anchor_point_y, 0.0, -theta, m, y_el, cr, cr_v, sr, element_color, joint_color) }}
+    {{ lift_drag("y_right", tl, cr) }}
+    {{ joint("y_left", damping, friction, spring_stiffness, spring_reference, "universal") }}
+    {{ joint("y_right", damping, friction, spring_stiffness, spring_reference, "universal") }}
+    {#- Fixed elements: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -#}
+    {%- set fixed_x = lose_x + vehicle_attach_y / np.tan(theta) -%}
+    {{ link("y_left_fixed", fixed_x, anchor_point_y + vehicle_attach_y, 0.0, 0.0, m, y_el, cr, cr_v, sr, element_color, joint_color) }}
+    {{ lift_drag("y_left_fixed", tl, cr) }}
+    {{ link("y_right_fixed", fixed_x, anchor_point_y - vehicle_attach_y, 0.0, 0.0, m, y_el, cr, cr_v, sr, element_color, joint_color) }}
+    {{ lift_drag("y_right_fixed", tl, cr) }}
+    {{ joint("y_left_fixed", damping, friction, spring_stiffness, spring_reference, "revolute") }}
+    {{ joint("y_right_fixed", damping, friction, spring_stiffness, spring_reference, "revolute") }}
+{%- endmacro -%}
+
+<?xml version="1.0" ?>
+<!-- DO NOT EDIT: Generated from solo_with_tether.sdf.jinja -->
+<sdf version="1.5">
+  <model name="solo_with_tether">
+    <pose>{{anchor_point_x - tl}} {{anchor_point_y}} 0.0 0.0 0.0 0.0</pose>
+    {% for n in range(number_elements) -%}
+    {%- set x = anchor_point_x + (tl / 2 + (n * tl / 2 + (n - 1) * tl / 2)) -%}
+    {{ link(n, x, anchor_point_y, 0.0, 0.0, m, tl, cr, cr_v, sr, element_color, joint_color) }}
+    {{ lift_drag(n, tl, cr) }}
+    {% endfor -%}
+    {{ y_element(y_el, tl) }}
+    {% for k in range(1, number_elements) -%}
+    {{ joint(k, damping, friction, spring_stiffness, spring_reference, "universal") }}
+    {% endfor -%}
+    <joint name="fixed_to_world" type="fixed">
+      <child>world</child>
+      <parent>link_0</parent>
+    </joint>
+    <include>
+      <uri>model://solo</uri>
+      <pose>{{vehicle_spawn_point_x}} {{vehicle_spawn_point_y}} 0.0 0.0 0.0 0.0</pose>
+    </include>
+    <link name='solo_left'>
+      <pose>{{vehicle_spawn_point_x - vehicle_attach_x}} {{vehicle_spawn_point_y - vehicle_attach_y}} 0.05 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.005</mass>
+        <inertia>
+          <ixx>1e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1e-05</iyy>
+          <iyz>0</iyz>
+          <izz>1e-05</izz>
+        </inertia>
+      </inertial>
+    </link>
+    <joint name='solo_left_joint' type='fixed'>
+      <child>solo_left</child>
+      <parent>solo::base_link</parent>
+    </joint>
+    <link name='solo_right'>
+      <pose>{{vehicle_spawn_point_x - vehicle_attach_x}} {{vehicle_spawn_point_y + vehicle_attach_y}} 0.05 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.005</mass>
+        <inertia>
+          <ixx>1e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1e-05</iyy>
+          <iyz>0</iyz>
+          <izz>1e-05</izz>
+        </inertia>
+      </inertial>
+    </link>
+    <joint name='solo_right_joint' type='fixed'>
+      <child>solo_right</child>
+      <parent>solo::base_link</parent>
+    </joint>
+    <joint name="tether_solo_right_joint" type="revolute">
+      <child>solo_right</child>
+      <parent>link_y_right_fixed</parent>
+      <axis>
+	<xyz>0 1 0</xyz>
+	<dynamics>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
+        </dynamics>
+	<use_parent_model_frame>true</use_parent_model_frame>
+      </axis>
+      <axis2>
+	<xyz>0 0 1</xyz>
+	<dynamics>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
+        </dynamics>
+	<use_parent_model_frame>true</use_parent_model_frame>
+      </axis2>
+      <physics>
+	<ode>
+	  <cfm_damping>1</cfm_damping>
+	</ode>
+      </physics>
+      <sensor name="tether_force_torque" type="force_torque">
+	<always_on>true</always_on>
+	<update_rate>100</update_rate>
+	<force_torque>
+	  <frame>child</frame>
+	  <measure_direction>child_to_parent</measure_direction>
+	</force_torque>
+      </sensor>
+    </joint>
+    <joint name="tether_solo_left_joint" type="revolute">
+      <child>solo_left</child>
+      <parent>link_y_left_fixed</parent>
+      <axis>
+	<xyz>0 1 0</xyz>
+	<dynamics>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
+        </dynamics>
+	<use_parent_model_frame>true</use_parent_model_frame>
+      </axis>
+      <axis2>
+	<xyz>0 0 1</xyz>
+	<dynamics>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
+        </dynamics>
+	<use_parent_model_frame>true</use_parent_model_frame>
+      </axis2>
+      <physics>
+	<ode>
+	  <cfm_damping>1</cfm_damping>
+	</ode>
+      </physics>
+      <sensor name="tether_force_torque" type="force_torque">
+	<always_on>true</always_on>
+	<update_rate>100</update_rate>
+	<force_torque>
+	  <frame>child</frame>
+	  <measure_direction>child_to_parent</measure_direction>
+	</force_torque>
+      </sensor>
+    </joint>
+  </model>
+</sdf>

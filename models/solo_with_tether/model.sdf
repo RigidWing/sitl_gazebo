@@ -1,0 +1,123 @@
+<sdf version='1.5'>
+  <model name='solo_with_tether'>
+    <include>
+      <uri>model://solo</uri>
+    </include>
+    <include>
+      <uri>model://tether</uri>
+      <pose>-0.40 0 0 0 3.1415 0</pose>
+    </include>
+    <link name='solo_left'>
+      <pose>-0.12 0.05 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.005</mass>
+        <inertia>
+          <ixx>1e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1e-05</iyy>
+          <iyz>0</iyz>
+          <izz>1e-05</izz>
+        </inertia>
+      </inertial>
+    </link>
+    <joint name='solo_left_joint' type='fixed'>
+      <child>solo_left</child>
+      <parent>solo::base_link</parent>
+    </joint>
+    <link name='solo_right'>
+      <pose>-0.12 -0.05 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.005</mass>
+        <inertia>
+          <ixx>1e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1e-05</iyy>
+          <iyz>0</iyz>
+          <izz>1e-05</izz>
+        </inertia>
+      </inertial>
+    </link>
+    <joint name='solo_right_joint' type='fixed'>
+      <child>solo_right</child>
+      <parent>solo::base_link</parent>
+    </joint>
+    <joint name="tether_solo_right_joint" type="revolute">
+      <child>solo_right</child>
+      <parent>tether::link_y_left</parent>
+      <axis>
+	<xyz>0 1 0</xyz>
+	<dynamics>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
+        </dynamics>
+	<use_parent_model_frame>true</use_parent_model_frame>
+      </axis>
+      <axis2>
+	<xyz>0 0 1</xyz>
+	<dynamics>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
+        </dynamics>
+	<use_parent_model_frame>true</use_parent_model_frame>
+      </axis2>
+      <physics>
+	<ode>
+	  <cfm_damping>1</cfm_damping>
+	</ode>
+      </physics>
+      <sensor name="tether_force_torque" type="force_torque">
+	<always_on>true</always_on>
+	<update_rate>100</update_rate>
+	<force_torque>
+	  <frame>child</frame>
+	  <measure_direction>child_to_parent</measure_direction>
+	</force_torque>
+      </sensor>
+    </joint>
+    <joint name="tether_solo_left_joint" type="revolute">
+      <child>solo_left</child>
+      <parent>tether::link_y_right</parent>
+      <axis>
+	<xyz>0 1 0</xyz>
+	<dynamics>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
+        </dynamics>
+	<use_parent_model_frame>true</use_parent_model_frame>
+      </axis>
+      <axis2>
+	<xyz>0 0 1</xyz>
+	<dynamics>
+          <damping>0.1</damping>
+          <friction>0.0</friction>
+          <spring_stiffness>0.05</spring_stiffness>
+          <spring_reference>0.0</spring_reference>
+        </dynamics>
+	<use_parent_model_frame>true</use_parent_model_frame>
+      </axis2>
+      <physics>
+	<ode>
+	  <cfm_damping>1</cfm_damping>
+	</ode>
+      </physics>
+      <sensor name="tether_force_torque" type="force_torque">
+	<always_on>true</always_on>
+	<update_rate>100</update_rate>
+	<force_torque>
+	  <frame>child</frame>
+	  <measure_direction>child_to_parent</measure_direction>
+	</force_torque>
+      </sensor>
+    </joint>
+  </model>
+</sdf>
