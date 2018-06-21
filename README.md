@@ -51,7 +51,7 @@ git checkout -b <own_branch>
 **Important to know**: An airframe model first needs to be defined and implemented first as a basic .sdf file (eg. for the solo there existis the solo and the solo_with_tether model). The solo_with_tether model links the tether to the solo (includes the solo.sdf as a basic model within the jinja file). Thus as a first step you need to know how to create a new model and in a second step you need to know how to link tether and airframe model together.
 
 
-### Create a new model and add the tether 
+### Create a new model
 1. Make a new world:
 ```
 PX4_Firmware/Tools/sitl_gazebo/worlds/new_model.world
